@@ -15,10 +15,18 @@ class QuestionsController < ApplicationController
   def edit
   end
 
+  def create
+    @question = Question.create(question_params)
+  end
+
   private
 
   def set_question
     @question = Question.find(params[:id])
+  end
+
+  def question_params
+    params.require(:question).permit(:title, :body)
   end
 
 end
