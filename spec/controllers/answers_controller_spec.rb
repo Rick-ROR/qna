@@ -7,11 +7,6 @@ RSpec.describe AnswersController, type: :controller do
   describe 'GET #show' do
     let(:answer) {create(:answer)}
 
-    # it 'assigns the requested answer to @answer' do
-    #   get :show, params: {id: answer}
-    #   expect(assigns(:answer)).to eq answer
-    # end
-
     it 'renders show view' do
       get :show, params: {id: answer}
       expect(response).to render_template :show
@@ -25,6 +20,22 @@ RSpec.describe AnswersController, type: :controller do
       get :new, params: { question_id: question }
       expect(response).to render_template :new
     end
+  end
+  
+  describe 'POST #create' do
+    context 'with valid attributes' do
+      let(:action) { post :create, params: { question_id: question, answer: attributes_for(:answer) } }
+
+      it 'saves a new answer to the given question to database' do
+        expect { action }.to change(question.answers, :count).by(1)
+      end
+
+      it 'redirects to show view' do
+        expect(action).to redirect_to assigns(:answer)
+      end
+    end
+
+    context 'with invalid attributes'
   end
 
 end
