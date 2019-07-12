@@ -52,13 +52,14 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     context 'with invalid attributes' do
+      let(:question_dup) { question.dup }
       before { patch :update, params: { id: question, question: attributes_for(:question, :invalid) } }
 
       it 'does not change question' do
         question.reload
 
-        expect(question.title).to eq 'MyString'
-        expect(question.body).to eq 'MyText'
+        expect(question.title).to eq question_dup.title
+        expect(question.body).to eq question_dup.body
       end
 
       it 're-renders edit view' do
