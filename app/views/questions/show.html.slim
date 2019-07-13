@@ -1,2 +1,10 @@
 h1= question.title
 p= question.body
+
+
+ul.question__answers
+  - question.answers.each do |answer|
+    li.answer
+      p= answer.body
+
+= render 'answers/new', question: question, answer: question.answers.new

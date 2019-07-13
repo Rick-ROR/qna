@@ -14,3 +14,22 @@ feature 'User can see a list of questions', %q(
 
 
 end
+
+
+feature 'User can view the question and answers to it.', %q(
+  I would like to see questions and a list of answers to it,
+  even if I am not registered
+) do
+
+  given(:question) { create(:question) }
+
+  scenario 'User can view the question and answers to it' do
+    answers = create_list(:answer, 4, question: question)
+    visit question_path(question)
+
+    expect(page).to have_content question.title
+    expect(page).to have_content question.body
+
+    answers.each { |answer| expect(page).to have_content(answer.body) }
+  end
+end

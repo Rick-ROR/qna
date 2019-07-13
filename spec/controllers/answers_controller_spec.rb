@@ -12,8 +12,8 @@ RSpec.describe AnswersController, type: :controller do
         expect { action }.to change(question.answers, :count).by(1)
       end
 
-      it 'redirects to show view' do
-        expect(action).to redirect_to assigns(:answer)
+      it 'redirects to question show' do
+        expect(action).to redirect_to question
       end
     end
 
@@ -24,8 +24,8 @@ RSpec.describe AnswersController, type: :controller do
         expect { action }.not_to change(Answer, :count)
       end
 
-      it 're-renders new view' do
-        expect(action).to render_template(:new)
+      it 're-renders new view on question show' do
+        expect(action).to render_template('questions/show')
       end
     end
   end
