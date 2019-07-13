@@ -7,11 +7,20 @@ class AnswersController < ApplicationController
 
   def create
     @answer = question.answers.new(answer_params)
-
+    @answer.author = current_user
     if @answer.save
       redirect_to question, notice: 'Reply successfully sent.'
     else
       render 'questions/show'
+    end
+  end
+
+  def destroy
+    if current_user.author_of?(answer)
+      answer.destroy
+      redirect_to answer.question, notice: 'Your answer was successfully deleted.'
+    else
+      redirect_to answer.question, notice: 'You have no rights to do this.'
     end
   end
 

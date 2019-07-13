@@ -2,14 +2,18 @@ h1= question.title
 p= question.body
 
 - if current_user&.author_of?(question)
-  ul.question__actions
+  ul.question_actions
     li= link_to 'Edit', edit_question_path(question)
     li= link_to 'Delete', question_path(question), method: :delete, data: { confirm: 'Are your sure?' }
 
 
-ul.question__answers
+ul.question_answers
     - question.answers.each do |answer|
-      li.answer
-        p= answer.body
+      - unless answer.new_record?
+        li.answer
+          p= answer.body
+          - if current_user&.author_of?(answer)
+            ul.answer_actions
+              li= link_to 'Delete', answer_path(answer), method: :delete, data: {confirm: 'Are your sure?'}
 
-= render 'answers/new', question: question, answer: question.answers.new
+= render 'answers/new', answer: question.answers.new
