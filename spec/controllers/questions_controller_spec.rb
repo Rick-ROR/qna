@@ -8,16 +8,20 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'POST #create' do
 
     context 'with valid attributes' do
+      let(:post_question) { post :create, params: { question: attributes_for(:question) } }
+
+      it 'saves a new question to DB' do
+        expect { post_question }.to change(Question, :count).by(1)
+      end
+
+      it 'saves a new question to the logged user' do
+        expect { post_question }.to change(user.author_questions, :count).by(1)
+      end
 
       it 'redirects to show view' do
         post :create, params: { question: attributes_for(:question) }
         expect(response).to redirect_to assigns(:question)
       end
-
-      it 'saves a new question to the logged user' do
-        expect { post :create, params: { question: attributes_for(:question) } }.to change(user.author_questions, :count).by(1)
-      end
-
     end
 
     context 'with invalid attributes' do
