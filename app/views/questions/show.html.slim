@@ -9,7 +9,7 @@ p= question.body
 
 ul.question_answers
     - question.answers.each do |answer|
-      - unless answer.new_record?
+      - if answer.persisted?
         li.answer
           p= answer.body
           - if current_user&.author_of?(answer)

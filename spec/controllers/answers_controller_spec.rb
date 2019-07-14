@@ -15,6 +15,10 @@ RSpec.describe AnswersController, type: :controller do
         expect { action }.to change(question.answers, :count).by(1)
       end
 
+      it 'saves a new answer to the logged user' do
+        expect { action }.to change(user.author_answers, :count).by(1)
+      end
+
       it 'redirects to question show' do
         expect(action).to redirect_to question
       end
