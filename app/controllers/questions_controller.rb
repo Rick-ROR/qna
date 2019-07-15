@@ -1,12 +1,14 @@
 class QuestionsController < ApplicationController
+  before_action :authenticate_user!, except: [:index, :show]
+
   expose :questions, ->{ Question.all }
   expose :question
 
   def create
-    @question = Question.new(question_params)
+    @question = current_user.author_questions.new(question_params)
 
     if @question.save
-      redirect_to @question
+      redirect_to @question, notice: 'Your question successfully created.'
     else
       render :new
     end
@@ -21,8 +23,12 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    question.destroy
-    redirect_to questions_path
+    if current_user.author_of?(question)
+      question.destroy
+      redirect_to questions_path, notice: 'Your question was successfully deleted.'
+    else
+      redirect_to question, notice: 'You have no rights to do this.'
+    end
   end
 
   private
