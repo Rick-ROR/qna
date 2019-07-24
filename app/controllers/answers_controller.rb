@@ -10,8 +10,6 @@ class AnswersController < ApplicationController
     @answer.author = current_user
     if @answer.save
       redirect_to question, notice: 'Reply successfully sent.'
-    else
-      render 'questions/show'
     end
   end
 
