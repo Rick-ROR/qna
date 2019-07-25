@@ -8,9 +8,13 @@ class AnswersController < ApplicationController
   def create
     @answer = question.answers.new(answer_params)
     @answer.author = current_user
-    if @answer.save
-      redirect_to question, notice: 'Reply successfully sent.'
-    end
+    @answer.save
+  end
+
+  def update
+    @answer = Answer.find(params[:id])
+    @answer.update(answer_params)
+    @question = @answer.question
   end
 
   def destroy

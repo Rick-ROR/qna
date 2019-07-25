@@ -9,7 +9,7 @@ RSpec.describe AnswersController, type: :controller do
   describe 'POST #create' do
 
     context 'with valid attributes' do
-      let(:action) { post :create, params: { question_id: question, answer: attributes_for(:answer) } }
+      let(:action) { post :create, params: { question_id: question, answer: attributes_for(:answer) }, format: :js }
 
       it 'saves a new answer to the given question to DB' do
         expect { action }.to change(question.answers, :count).by(1)
@@ -19,8 +19,8 @@ RSpec.describe AnswersController, type: :controller do
         expect { action }.to change(user.author_answers, :count).by(1)
       end
 
-      it 'redirects to question show' do
-        expect(action).to redirect_to question
+      it 're-renders template :create for answer' do
+        expect(action).to render_template(:create)
       end
     end
 
@@ -31,7 +31,7 @@ RSpec.describe AnswersController, type: :controller do
         expect { action }.not_to change(Answer, :count)
       end
 
-      it 're-renders new view on question show' do
+      it 're-renders template :create for answer' do
         expect(action).to render_template(:create)
       end
     end
@@ -63,5 +63,35 @@ RSpec.describe AnswersController, type: :controller do
         expect(del_answer).to redirect_to question
       end
     end
+  end
+
+  describe 'PATCH #update' do
+    let!(:answer) { create(:answer, question: question, author: user) }
+
+    context 'with valid attrs' do
+      let!(:update_answer) { patch :update, params: { id: answer, answer: { body: 'new body' } }, format: :js }
+
+      it 'changes answer attrs' do
+        answer.reload
+        expect(answer.body).to eq 'new body'
+      end
+
+      it 'render update view' do
+        expect(response).to render_template(:update)
+      end
+    end
+
+    context 'with invalid attrs'
+      let(:update_answer) { patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js }
+
+      it 'does not change answer attrs' do
+        expect { update_answer }.to_not change(answer, :body)
+      end
+
+      it 'render update view' do
+        update_answer
+        expect(response).to render_template(:update)
+      end
+
   end
 end

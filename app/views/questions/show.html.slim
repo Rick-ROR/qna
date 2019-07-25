@@ -8,12 +8,6 @@ p= question.body
 
 
 ul.question_answers
-    - question.answers.each do |answer|
-      - if answer.persisted?
-        li.answer
-          p= answer.body
-          - if current_user&.author_of?(answer)
-            ul.answer_actions
-              li= link_to 'Delete', answer_path(answer), method: :delete, data: {confirm: 'Are your sure?'}
+  = render question.answers
 
 = render 'answers/new', answer: question.answers.new
