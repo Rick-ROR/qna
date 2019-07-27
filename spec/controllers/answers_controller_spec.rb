@@ -38,7 +38,7 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    let(:del_answer) { delete :destroy, params: { id: answer } }
+    let(:del_answer) { delete :destroy, params: { id: answer }, format: :js }
 
     context 'by author' do
       let!(:answer) { create(:answer, question: question, author: user) }
@@ -48,7 +48,7 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       it 'redirects to question show' do
-        expect(del_answer).to redirect_to question
+        expect(del_answer).to render_template(:destroy)
       end
     end
 
