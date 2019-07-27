@@ -1,4 +1,5 @@
 require 'rails_helper'
+
 feature 'User can edit his answer', %q{
   In order to correct mistakes
   As an author of answer
@@ -44,7 +45,7 @@ feature 'User can edit his answer', %q{
       end
     end
 
-    scenario "tries to edit other user's question" do
+    scenario "tries to edit other user's answer" do
       someones_answer = create(:answer, question: question)
       visit current_path
 
