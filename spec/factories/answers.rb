@@ -4,7 +4,7 @@ FactoryBot.define do
     question
 
     body { "MyText" }
-    correct { false }
+    best { false }
 
     trait :invalid do
       body { nil }
