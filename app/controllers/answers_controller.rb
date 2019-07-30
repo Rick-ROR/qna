@@ -25,6 +25,15 @@ class AnswersController < ApplicationController
     end
   end
 
+  def best
+    @answer = Answer.find(params[:id])
+    if current_user.author_of?(@answer.question)
+      @answer.make_best
+    else
+      redirect_to answer.question, notice: 'You have no rights to do this.'
+    end
+  end
+
   private
 
   def answer_params

@@ -10,9 +10,11 @@ feature 'User can edit his question', %q{
   given!(:question) { create(:question, author: user_author) }
 
   scenario 'Unauthenticated can not edit question' do
-
+    visit question_path(question)
+    within('.question_box') do
+      expect(page).to_not have_link 'Edit'
+    end
   end
-
 
   describe 'Authenticated user'	do
 
@@ -22,7 +24,6 @@ feature 'User can edit his question', %q{
     end
 
     scenario 'edits his question', js: true do
-      # save_and_open_page
       within('.question_box') do
         click_on 'Edit'
         fill_in 'Title', with: 'edited Title'
@@ -35,16 +36,27 @@ feature 'User can edit his question', %q{
         expect(page).to have_content 'edited Body'
         expect(page).to_not have_selector 'form'
       end
-
-
     end
 
     scenario 'edits his question with errors', js: true do
+      within('.question_box') do
+        click_on 'Edit'
+        fill_in 'Title', with: ''
+        fill_in 'Body', with: ''
+        click_on 'Save'
 
+        expect(page).to have_content "Title can't be blank"
+        expect(page).to have_content "Body can't be blank"
+      end
     end
 
     scenario "tries to edit other user's question" do
+      someones_question = create(:question)
+      visit question_path(someones_question)
 
+      within('.question_box') do
+        expect(page).to_not have_link 'Edit'
+      end
     end
 
   end

@@ -94,4 +94,36 @@ RSpec.describe AnswersController, type: :controller do
       end
 
   end
+
+  describe 'PATCH #best' do
+    let(:answer) { create(:answer, question: question) }
+    let(:make_best_answer) { patch :best, params: { id: answer }, format: :js }
+
+    context 'by author question' do
+      let(:question) { create(:question, author: user) }
+
+      it 'make best answer' do
+        make_best_answer
+        answer.reload
+        expect(answer.best).to eq true
+      end
+
+      it 'render template best' do
+        expect(make_best_answer).to render_template(:best)
+      end
+    end
+
+    context 'by another author' do
+      let(:question) { create(:question) }
+
+      it 'trying to make best answer' do
+        expect { make_best_answer }.to_not change(answer, :best)
+      end
+
+      it 'redirects to question show' do
+        expect(make_best_answer).to redirect_to question
+      end
+    end
+
+  end
 end

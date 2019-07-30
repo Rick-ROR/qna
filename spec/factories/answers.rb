@@ -3,7 +3,7 @@ FactoryBot.define do
     association :author, factory: :user
     question
 
-    body { "MyText" }
+    sequence(:body) { |n| "MyText ##{n}" }
     best { false }
 
     trait :invalid do
