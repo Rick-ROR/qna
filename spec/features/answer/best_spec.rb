@@ -25,12 +25,7 @@ feature 'Author of the question can vote for the best answer', %q{
       end
 
       expect(page).to have_content('This is better answer!', count: 1)
-      expect(page.find('ul.question_answers > li', match: :first)[:id]).to eq("answer-#{answer.id}")
-      expect(page).to have_tag("ul.question_answers > li:first-child#answer-#{answer.id}", text: answer.body)
-      #
-      expect(page.find('ul.question_answers', match: :first)).to have_content answer.body
-      expect(page.find('ul.question_answers > li:first-child')).to have_content answer.body
-      expect(page.first('ul.question_answers > li')).to have_content answer.body
+      expect(page.first('ul.question_answers > li')[:id]).to eq("answer-#{answer.id}")
     end
 
     scenario 'can re-select the best answer', js: true do
