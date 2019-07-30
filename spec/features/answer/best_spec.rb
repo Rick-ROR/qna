@@ -25,10 +25,12 @@ feature 'Author of the question can vote for the best answer', %q{
       end
 
       expect(page).to have_content('This is better answer!', count: 1)
+      expect(page.find('ul.question_answers > li', match: :first)[:id]).to eq("answer-#{answer.id}")
+      expect(page).to have_tag("ul.question_answers > li:first-child#answer-#{answer.id}", text: answer.body)
+      #
       expect(page.find('ul.question_answers', match: :first)).to have_content answer.body
-      # expect(page.find('ul.question_answers > li:first-child')).to have_content answer.body
-      # puts page.first('ul.question_answers > li').text
-      # expect(page.first('ul.question_answers > li')).to have_content answer.body
+      expect(page.find('ul.question_answers > li:first-child')).to have_content answer.body
+      expect(page.first('ul.question_answers > li')).to have_content answer.body
     end
 
     scenario 'can re-select the best answer', js: true do
@@ -48,7 +50,6 @@ feature 'Author of the question can vote for the best answer', %q{
     end
 
   end
-
 
   describe 'not Author of the question' do
 
