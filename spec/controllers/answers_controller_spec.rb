@@ -66,22 +66,24 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    let!(:answer) { create(:answer, question: question, author: user) }
 
-    context 'with valid attrs' do
-      let!(:update_answer) { patch :update, params: { id: answer, answer: { body: 'new body' } }, format: :js }
+    context 'by author' do
+      let!(:answer) { create(:answer, question: question, author: user) }
 
-      it 'changes answer attrs' do
-        answer.reload
-        expect(answer.body).to eq 'new body'
+      context 'with valid attrs' do
+        let!(:update_answer) { patch :update, params: { id: answer, answer: { body: 'new body' } }, format: :js }
+
+        it 'changes answer attrs' do
+          answer.reload
+          expect(answer.body).to eq 'new body'
+        end
+
+        it 'render update view' do
+          expect(response).to render_template(:update)
+        end
       end
 
-      it 'render update view' do
-        expect(response).to render_template(:update)
-      end
-    end
-
-    context 'with invalid attrs'
+      context 'with invalid attrs'
       let(:update_answer) { patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js }
 
       it 'does not change answer attrs' do
@@ -92,6 +94,25 @@ RSpec.describe AnswersController, type: :controller do
         update_answer
         expect(response).to render_template(:update)
       end
+    end
+
+    context 'by other user' do
+      let!(:answer) { create(:answer, question: question) }
+      let!(:update_answer) { patch :update, params: { id: answer, answer: { body: 'new body' } }, format: :js }
+
+      it 'does not change answer attrs' do
+        expect { update_answer }.to_not change(answer, :body)
+      end
+
+      it 'redirects to question' do
+        expect(update_answer).to redirect_to question
+      end
+
+      it 'flashes message with error ' do
+        update_answer
+        expect(flash[:notice]).to eq 'You have no rights to do this.'
+      end
+    end
 
   end
 

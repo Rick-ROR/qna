@@ -1,5 +1,5 @@
 class Answer < ApplicationRecord
-  belongs_to :question, class_name: 'Question'
+  belongs_to :question
   belongs_to :author, class_name: 'User'
 
   validates :body, presence: true
@@ -10,8 +10,8 @@ class Answer < ApplicationRecord
 
   def make_best
     transaction do
-      question.answers.get_best&.update(best: false)
-      update(best: true)
+      question.answers.get_best.first&.update!(best: false)
+      update!(best: true)
     end
   end
 

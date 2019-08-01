@@ -37,6 +37,8 @@ RSpec.configure do |config|
   config.include FeatureHelpers, type: :feature
   config.include RSpecHtmlMatchers
 
+  RSpec::Matchers.define_negated_matcher :not_change, :change
+
   Capybara.javascript_driver = :selenium_chrome_headless
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures

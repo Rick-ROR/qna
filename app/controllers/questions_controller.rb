@@ -16,7 +16,11 @@ class QuestionsController < ApplicationController
 
   def update
     @question = Question.find(params[:id])
-    @question.update(question_params)
+    if current_user.author_of?(@question)
+      @question.update(question_params)
+    else
+      redirect_to @question, notice: 'You have no rights to do this.'
+    end
   end
 
   def destroy

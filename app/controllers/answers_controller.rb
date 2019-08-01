@@ -13,8 +13,12 @@ class AnswersController < ApplicationController
 
   def update
     @answer = Answer.find(params[:id])
-    @answer.update(answer_params)
     @question = @answer.question
+    if current_user.author_of?(@answer)
+      @answer.update(answer_params)
+    else
+      redirect_to @question, notice: 'You have no rights to do this.'
+    end
   end
 
   def destroy
@@ -37,7 +41,7 @@ class AnswersController < ApplicationController
   private
 
   def answer_params
-    params.require(:answer).permit(:body, :best)
+    params.require(:answer).permit(:body)
   end
 
 end
