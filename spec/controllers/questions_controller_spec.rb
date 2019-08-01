@@ -40,8 +40,9 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'PATCH #update' do
 
     context 'by author' do
+      let(:question) { create(:question, author: user) }
+
       context 'with valid attributes' do
-        let(:question) { create(:question, author: user) }
         before { patch :update, params: { id: question, question: { title: 'new title', body: 'new body'}, format: :js } }
 
         it 'assigns the requested question to @question' do
@@ -64,33 +65,31 @@ RSpec.describe QuestionsController, type: :controller do
         let(:update_invalid)  { patch :update, params: { id: question, question: attributes_for(:question, :invalid) }, format: :js }
 
         it 'does not change question' do
-          expect { update_invalid }.to not_change(question, :title).and not_change(question, :body)
+          expect do
+            update_invalid
+            question.reload
+          end.to not_change(question, :title).and not_change(question, :body)
         end
 
         it 're-renders update view' do
-          expect( update_invalid ).to render_template :update
+          expect(update_invalid ).to redirect_to question
         end
       end
     end
 
     context 'by other user' do
-      let(:question) { create(:question, author: user) }
-      let(:update_question) { patch :update, params: { id: question, question: { title: 'new title', body: 'new body'}, format: :js } }
+      let(:question) { create(:question) }
+      before { patch :update, params: { id: question, question: { title: 'new title', body: 'new body'}, format: :js } }
 
       it 'does not change answer attrs' do
-        p question
-        expect { patch :update, params: { id: question, question: { title: 'new title', body: 'new body'}, format: :js }}.to_not change(question, :body)
-        p question.reload
-        expect { patch :update, params: { id: question, question: { title: 'new title2', body: 'new body2'}, format: :js }}.to not_change(question, :title).and not_change(question, :body)
-        p question.reload
+        expect { question.reload }.to not_change(question, :title).and not_change(question, :body)
       end
 
       it 'redirects to question' do
-        expect(update_question).to redirect_to question
+        expect(response).to redirect_to question
       end
 
       it 'flashes message with error' do
-        update_question
         expect(flash[:notice]).to eq 'You have no rights to do this.'
       end
     end

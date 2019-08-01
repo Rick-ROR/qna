@@ -71,11 +71,10 @@ RSpec.describe AnswersController, type: :controller do
       let!(:answer) { create(:answer, question: question, author: user) }
 
       context 'with valid attrs' do
-        let!(:update_answer) { patch :update, params: { id: answer, answer: { body: 'new body' } }, format: :js }
+        before  { patch :update, params: { id: answer, answer: { body: 'new body' } }, format: :js }
 
         it 'changes answer attrs' do
-          answer.reload
-          expect(answer.body).to eq 'new body'
+          expect(answer.reload.body).to eq 'new body'
         end
 
         it 'render update view' do
@@ -84,32 +83,30 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       context 'with invalid attrs'
-      let(:update_answer) { patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js }
+      before { patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js }
 
       it 'does not change answer attrs' do
-        expect { update_answer }.to_not change(answer, :body)
+        expect { answer.reload }.to_not change(answer, :body)
       end
 
       it 'render update view' do
-        update_answer
         expect(response).to render_template(:update)
       end
     end
 
     context 'by other user' do
       let!(:answer) { create(:answer, question: question) }
-      let!(:update_answer) { patch :update, params: { id: answer, answer: { body: 'new body' } }, format: :js }
+      before { patch :update, params: { id: answer, answer: { body: 'new body' } }, format: :js }
 
       it 'does not change answer attrs' do
-        expect { update_answer }.to_not change(answer, :body)
+        expect { answer.reload }.to_not change(answer, :body)
       end
 
       it 'redirects to question' do
-        expect(update_answer).to redirect_to question
+        expect(response).to redirect_to question
       end
 
       it 'flashes message with error ' do
-        update_answer
         expect(flash[:notice]).to eq 'You have no rights to do this.'
       end
     end
@@ -118,31 +115,27 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'PATCH #best' do
     let(:answer) { create(:answer, question: question) }
-    let(:make_best_answer) { patch :best, params: { id: answer }, format: :js }
+    before { patch :best, params: { id: answer }, format: :js }
 
     context 'by author question' do
       let(:question) { create(:question, author: user) }
 
       it 'make best answer' do
-        make_best_answer
-        answer.reload
-        expect(answer.best).to eq true
+        expect(answer.reload.best).to eq true
       end
 
       it 'render template best' do
-        expect(make_best_answer).to render_template(:best)
+        expect(response).to render_template(:best)
       end
     end
 
     context 'by another author' do
-      let(:question) { create(:question) }
-
       it 'trying to make best answer' do
-        expect { make_best_answer }.to_not change(answer, :best)
+        expect { answer.reload }.to_not change(answer, :best)
       end
 
       it 'redirects to question show' do
-        expect(make_best_answer).to redirect_to question
+        expect(response).to redirect_to question
       end
     end
 

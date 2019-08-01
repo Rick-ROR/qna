@@ -10,7 +10,7 @@ class Answer < ApplicationRecord
 
   def make_best
     transaction do
-      question.answers.get_best.first&.update!(best: false)
+      question.answers.get_best.take&.update!(best: false)
       update!(best: true)
     end
   end
