@@ -5,6 +5,10 @@
       - if answer.best?
         p= "This is better answer!"
 
+      - if answer.files.attached?
+        - answer.files.each do |file|
+          p= link_to file.filename.to_s, url_for(file)
+
       ul.answer_actions
         - if current_user&.author_of?(answer)
           li= link_to 'Delete', answer_path(answer), remote: true, method: :delete, data: {confirm: 'Are your sure?'}
