@@ -1,6 +1,9 @@
 h1= question.title
 p= question.body
 
+- if question.file.attached?
+  p= link_to question.file.filename.to_s, url_for(question.file)
+
 - if current_user&.author_of?(question)
   ul.question_actions
     li= link_to 'Edit', '#', class: 'edit-question-link', data: { question_id: question.id }
