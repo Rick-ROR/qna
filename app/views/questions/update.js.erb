@@ -1,0 +1,9 @@
+var $questionItem = $('.question_box');
+
+<% if @question.errors.present? %>
+  $questionItem
+      .find('.question_errors')
+      .html('<%= render 'shared/errors', resource: @question %>');
+<% else %>
+  $questionItem.html('<%= j render @question %>');
+<% end %>

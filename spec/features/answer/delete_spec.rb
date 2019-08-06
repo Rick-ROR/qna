@@ -13,12 +13,12 @@ feature 'User can delete his answer', %q(
       sign_in(user_author)
     end
 
-    scenario 'can delete his answer' do
+    scenario 'can delete his answer', js: true do
       answer = create(:answer, question: question, author: user_author)
       visit question_path(question)
 
-      within('.answer_actions') do
-        click_link 'Delete'
+      page.accept_confirm do
+        within('.answer_actions') { click_link 'Delete' }
       end
 
       expect(page).to have_content 'Your answer was successfully deleted.'

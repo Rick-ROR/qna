@@ -15,10 +15,11 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    if question.update(question_params)
-      redirect_to question
+    @question = Question.find(params[:id])
+    if current_user.author_of?(@question)
+      @question.update(question_params)
     else
-      render :edit
+      redirect_to @question, notice: 'You have no rights to do this.'
     end
   end
 

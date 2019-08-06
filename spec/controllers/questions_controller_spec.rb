@@ -19,19 +19,19 @@ RSpec.describe QuestionsController, type: :controller do
       end
 
       it 'redirects to show view' do
-        post :create, params: { question: attributes_for(:question) }
-        expect(response).to redirect_to assigns(:question)
+        expect(post_question).to redirect_to assigns(:question)
       end
     end
 
     context 'with invalid attributes' do
+      let(:post_question) { post :create, params: { question: attributes_for(:question, :invalid) } }
+
       it 'does not save the question' do
-        expect { post :create, params: { question: attributes_for(:question, :invalid) } }.to_not change(Question, :count)
+        expect { post_question }.to_not change(Question, :count)
       end
 
       it 're-renders new view' do
-        post :create, params: { question: attributes_for(:question, :invalid) }
-        expect(response).to render_template :new
+        expect(post_question).to render_template :new
       end
     end
 
@@ -39,41 +39,61 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'PATCH #update' do
 
-    context 'with valid attributes' do
-      it 'assigns the requested question to @question' do
-        patch :update, params: { id: question, question: attributes_for(:question) }
-        expect(assigns(:exposed_question)).to eq question
+    context 'by author' do
+      let(:question) { create(:question, author: user) }
+
+      context 'with valid attributes' do
+        before { patch :update, params: { id: question, question: { title: 'new title', body: 'new body'}, format: :js } }
+
+        it 'assigns the requested question to @question' do
+          expect(assigns(:question)).to eq question
+        end
+
+        it 'changes question attributes' do
+          question.reload
+
+          expect(question.title).to eq 'new title'
+          expect(question.body).to eq 'new body'
+        end
+
+        it 'render update question' do
+          expect(response).to render_template :update
+        end
       end
 
-      it 'changes question attributes' do
-        patch :update, params: { id: question, question: { title: 'new title', body: 'new body'} }
-        question.reload
+      context 'with invalid attributes' do
+        let(:update_invalid)  { patch :update, params: { id: question, question: attributes_for(:question, :invalid) }, format: :js }
 
-        expect(question.title).to eq 'new title'
-        expect(question.body).to eq 'new body'
+        it 'does not change question' do
+          expect do
+            update_invalid
+            question.reload
+          end.to not_change(question, :title).and not_change(question, :body)
+        end
+
+        it 're-renders update view' do
+          expect(update_invalid ).to redirect_to question
+        end
+      end
+    end
+
+    context 'by other user' do
+      let(:question) { create(:question) }
+      before { patch :update, params: { id: question, question: { title: 'new title', body: 'new body'}, format: :js } }
+
+      it 'does not change answer attrs' do
+        expect { question.reload }.to not_change(question, :title).and not_change(question, :body)
       end
 
-      it 'redirects to updated question' do
-        patch :update, params: { id: question, question: attributes_for(:question) }
+      it 'redirects to question' do
         expect(response).to redirect_to question
       end
-    end
 
-    context 'with invalid attributes' do
-      let(:question_dup) { question.dup }
-      before { patch :update, params: { id: question, question: attributes_for(:question, :invalid) } }
-
-      it 'does not change question' do
-        question.reload
-
-        expect(question.title).to eq question_dup.title
-        expect(question.body).to eq question_dup.body
-      end
-
-      it 're-renders edit view' do
-        expect(response).to render_template :edit
+      it 'flashes message with error' do
+        expect(flash[:notice]).to eq 'You have no rights to do this.'
       end
     end
+
   end
 
   describe 'DELETE #destroy' do

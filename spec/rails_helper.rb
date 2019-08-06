@@ -35,6 +35,12 @@ RSpec.configure do |config|
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.include ControllerHelpers, type: :controller
   config.include FeatureHelpers, type: :feature
+  config.include RSpecHtmlMatchers
+
+  RSpec::Matchers.define_negated_matcher :not_change, :change
+
+  Capybara.javascript_driver = :selenium_chrome_headless
+
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 

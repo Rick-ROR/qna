@@ -8,17 +8,29 @@ class AnswersController < ApplicationController
   def create
     @answer = question.answers.new(answer_params)
     @answer.author = current_user
-    if @answer.save
-      redirect_to question, notice: 'Reply successfully sent.'
+    @answer.save
+  end
+
+  def update
+    @question = answer.question
+    if current_user.author_of?(answer)
+      answer.update(answer_params)
     else
-      render 'questions/show'
+      redirect_to @question, notice: 'You have no rights to do this.'
     end
   end
 
   def destroy
     if current_user.author_of?(answer)
       answer.destroy
-      redirect_to answer.question, notice: 'Your answer was successfully deleted.'
+    else
+      redirect_to answer.question, notice: 'You have no rights to do this.'
+    end
+  end
+
+  def best
+    if current_user.author_of?(answer.question)
+      answer.make_best
     else
       redirect_to answer.question, notice: 'You have no rights to do this.'
     end
@@ -27,7 +39,7 @@ class AnswersController < ApplicationController
   private
 
   def answer_params
-    params.require(:answer).permit(:body, :correct)
+    params.require(:answer).permit(:body)
   end
 
 end
