@@ -18,6 +18,8 @@
             .answer_errors= render 'shared/errors', resource: answer
             = f.label :body, 'Your answer'
             = f.text_area :body
+            = f.label :files
+            = f.file_field :files, multiple: true
             = f.submit 'Save'
 
         - if current_user&.author_of?(answer.question)
