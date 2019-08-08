@@ -2,6 +2,6 @@
   = render question
 
 ul.question_answers
-  = render question.answers
+  = render question.answers.with_attached_files
 
 = render 'answers/new', answer: question.answers.new
