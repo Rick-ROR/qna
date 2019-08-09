@@ -5,4 +5,9 @@ p= form_with model: question do |f|
   = f.text_field :title
   = f.label :body
   = f.text_area :body
-  = f.submit 'Ask'
+
+  p
+    = f.label :files
+    = f.file_field :files, multiple: true
+
+  p = f.submit 'Ask'

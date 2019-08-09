@@ -1,6 +1,9 @@
 h1= question.title
 p= question.body
 
+- if question.files.attached?
+  = render 'shared/files', files: question.files
+
 - if current_user&.author_of?(question)
   ul.question_actions
     li= link_to 'Edit', '#', class: 'edit-question-link', data: { question_id: question.id }
@@ -10,5 +13,7 @@ p= question.body
       = f.text_field :title
       = f.label :body
       = f.text_area :body
+      = f.label :files
+      = f.file_field :files, multiple: true, direct_upload: true
       = f.submit 'Save'
     li= link_to 'Delete', question_path(question), method: :delete, data: { confirm: 'Are your sure?' }

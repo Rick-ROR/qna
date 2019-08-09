@@ -1,20 +1,25 @@
 - if answer.persisted?
-    li.answer id="answer-#{answer.id}"
-      p= answer.body
+  li.answer id="answer-#{answer.id}"
+    p= answer.body
 
-      - if answer.best?
-        p= "This is better answer!"
+    - if answer.best?
+      p= "This is better answer!"
 
-      ul.answer_actions
-        - if current_user&.author_of?(answer)
-          li= link_to 'Delete', answer_path(answer), remote: true, method: :delete, data: {confirm: 'Are your sure?'}
-          li= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+    - if answer.files.attached?
+      = render 'shared/files', files: answer.files
 
-          = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
-            .answer_errors= render 'shared/errors', resource: answer
-            = f.label :body, 'Your answer'
-            = f.text_area :body
-            = f.submit 'Save'
+    ul.answer_actions
+      - if current_user&.author_of?(answer)
+        li= link_to 'Delete', answer_path(answer), remote: true, method: :delete, data: {confirm: 'Are your sure?'}
+        li= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
 
-        - if current_user&.author_of?(answer.question)
-          li= link_to 'make best?', best_answer_path(answer), method: :patch, class: "best-answer-link", data: { answer_id: answer.id }, remote: true
+        = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
+          .answer_errors= render 'shared/errors', resource: answer
+          = f.label :body, 'Your answer'
+          = f.text_area :body
+          = f.label :files
+          = f.file_field :files, multiple: true, direct_upload: true
+          = f.submit 'Save'
+
+      - if current_user&.author_of?(answer.question)
+        li= link_to 'make best?', best_answer_path(answer), method: :patch, class: "best-answer-link", data: { answer_id: answer.id }, remote: true
