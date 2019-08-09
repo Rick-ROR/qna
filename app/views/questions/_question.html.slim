@@ -1,6 +1,11 @@
 h1= question.title
 p= question.body
 
+- if question.links.any?
+  ul.links
+  - question.links.each do |link|
+    li= link_to link.name, link.url
+
 - if question.files.attached?
   = render 'shared/files', files: question.files
 
