@@ -9,6 +9,7 @@ p= form_with model: question do |f|
   p
     = f.label :files
     = f.file_field :files, multiple: true
+
   p Links:
   p
     = f.fields_for :links do |l|
@@ -18,6 +19,5 @@ p= form_with model: question do |f|
       p
         = l.label :url
         = l.text_area :url
-
 
   p = f.submit 'Ask'
