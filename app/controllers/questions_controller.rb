@@ -1,12 +1,9 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action -> { question.links.build }, only: :new
-  before_action -> { answer.links.build }, only: :show
 
   expose :questions, ->{ Question.all }
   expose :question, -> { params[:id] ? Question.with_attached_files.find(params[:id]) : Question.new }
-  expose :answers, from: :question
-  expose :answer, -> { question.answers.new }
 
   def create
     @question = current_user.author_questions.new(question_params)
