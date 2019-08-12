@@ -2,7 +2,11 @@ $('.answer-errors').html('<%= render 'shared/errors', resource: @answer %>');
 
 <% if @answer.persisted? %>
   $('.question_answers').append('<%= j render @answer %>');
-  $('.new-answer #answer_body').val('');
-  $('.new-answer #answer_files').val('').removeAttr("disabled");
-  $('.new-answer input[type="hidden"][name="answer[files][]"]').remove();
+  let newAnswer = $('.new-answer')
+  newAnswer.find('#answer_body').val('');
+  newAnswer.find('#answer_links_attributes_0_name').val('');
+  newAnswer.find('#answer_links_attributes_0_url').val('');
+  newAnswer.find('#answer_files').val('').removeAttr("disabled");
+  newAnswer.find('input[type="hidden"][name="answer[files][]"]').remove();
+  newAnswer.find('.new_link').not(':first').remove();
 <% end %>

@@ -1,22 +1,26 @@
-.answer-errors
-  = render 'shared/errors', resource: @answer
+.new-answer *{:class => "border rounded border-info mb-5 p-3"}
+  h2= "Add your answer:"
+  .answer-errors
+    = render 'shared/errors', resource: @answer
 
-= form_with model: [question, answer], class: 'new-answer' do |f|
-  = f.label :body
-  = f.text_area :body
+  = form_with model: [question, answer], class: 'new-answer' do |f|
+    = f.label :body
+    = f.text_area :body, class: "form-control"
 
-  p
     = f.label :files
+    br
     = f.file_field :files, multiple: true, direct_upload: true
 
-  p Links:
-  p
+    p Links:
     = f.fields_for :links, link do |l|
-      p
+      .new_link id="link-0"
         = l.label :name, 'Link name'
-        = l.text_field :name
-      p
-        = l.label :url
-        = l.text_area :url
+        = l.text_field :name, class: "form-control"
 
-  p = f.submit 'Reply'
+        = l.label :url
+        = l.text_area :url, class: "form-control"
+
+      br
+      p= submit_tag 'Add more link', :type => 'button', class: 'add-link'
+
+    = f.submit 'Reply'

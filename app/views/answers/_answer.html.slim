@@ -1,30 +1,39 @@
 - if answer.persisted?
-  li.answer id="answer-#{answer.id}"
-    p= answer.body
-
-    - if answer.links.any?
-      ul.links
-      - answer.links.each do |link|
-        li= link_to link.name, link.url
+  li.answer *{:class => "border-left mb-3 px-4 #{"best" if answer.best}"} id="answer-#{answer.id}"
 
     - if answer.best?
-      p= "This is better answer!"
+      p.best
+        = octicon "mortar-board", :height => 48
+        = " This is best answer!"
+
+    p= answer.body
+
+    ul.answer_actions *{:class => "list-inline mb-2"}
+      - if current_user&.author_of?(answer.question)
+        li.list-inline-item= link_to 'make best?', best_answer_path(answer), method: :patch, class: "best-answer-link", data: {answer_id: answer.id}, remote: true
+
+      - if current_user&.author_of?(answer)
+        li.list-inline-item= link_to 'Delete', answer_path(answer), remote: true, method: :delete, data: {confirm: 'Are your sure?'}
+
+        li.list-inline-item= link_to 'Edit', '#', class: 'edit-answer-link', data: {answer_id: answer.id}
+
+        = form_with model: answer, class: 'hidden', html: {id: "edit-answer-#{answer.id}"} do |f|
+          .answer_errors= render 'shared/errors', resource: answer
+          p
+            = f.label :body, 'Your answer'
+            = f.text_area :body, class: "form-control"
+          p
+            = f.label :files
+            br
+            = f.file_field :files, multiple: true, direct_upload: true
+
+          p = f.submit 'Save'
+
+    - if answer.links.any?
+      p Links:
+      ul.links *{:class => "mb-3"}
+        - answer.links.each do |link|
+          li= link_to link.name, link.url
 
     - if answer.files.attached?
       = render 'shared/files', files: answer.files
-
-    ul.answer_actions
-      - if current_user&.author_of?(answer)
-        li= link_to 'Delete', answer_path(answer), remote: true, method: :delete, data: {confirm: 'Are your sure?'}
-        li= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
-
-        = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
-          .answer_errors= render 'shared/errors', resource: answer
-          = f.label :body, 'Your answer'
-          = f.text_area :body
-          = f.label :files
-          = f.file_field :files, multiple: true, direct_upload: true
-          = f.submit 'Save'
-
-      - if current_user&.author_of?(answer.question)
-        li= link_to 'make best?', best_answer_path(answer), method: :patch, class: "best-answer-link", data: { answer_id: answer.id }, remote: true
