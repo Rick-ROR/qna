@@ -4,23 +4,16 @@
     = render 'shared/errors', resource: @answer
 
   = form_with model: [question, answer], class: 'new-answer' do |f|
-    = f.label :body
-    = f.text_area :body, class: "form-control"
+    p
+      = f.label :body
+      = f.text_area :body, class: "form-control"
 
-    = f.label :files
-    br
-    = f.file_field :files, multiple: true, direct_upload: true
-
-    p Links:
-    = f.fields_for :links, link do |l|
-      .nested_link
-        = l.label :name, 'Link name'
-        = l.text_field :name, class: "form-control"
-
-        = l.label :url
-        = l.text_area :url, class: "form-control"
-
+    p
+      = f.label :files
       br
-      p= submit_tag 'Add more link', :type => 'button', class: 'add-link'
+      = f.file_field :files, multiple: true, direct_upload: true
+
+    - answer.links.build if answer.links.empty?
+    = render 'shared/links_form', form: f
 
     = f.submit 'Reply'

@@ -11,17 +11,6 @@ p= form_with model: question do |f|
     br
     = f.file_field :files, multiple: true
 
-  p Links:
-  p
-    = f.fields_for :links do |l|
-      .nested_link
-        = l.label :name, 'Link name'
-        = l.text_field :name, class: "form-control"
-
-        = l.label :url
-        = l.text_area :url, class: "form-control"
-
-      br
-      p= submit_tag 'Add more link', :type => 'button', class: 'add-link'
+    = render 'shared/links_form', form: f
 
   p = f.submit 'Ask'
