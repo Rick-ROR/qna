@@ -13,7 +13,7 @@
 
     p Links:
     = f.fields_for :links, link do |l|
-      .new_link id="link-0"
+      .nested_link
         = l.label :name, 'Link name'
         = l.text_field :name, class: "form-control"
 

@@ -27,9 +27,28 @@
             br
             = f.file_field :files, multiple: true, direct_upload: true
 
+          - answer.links.build if answer.links.empty?
+          p Links:
+          = f.fields_for :links do |l|
+            .nested_link
+              = l.label :name, 'Link name'
+              = l.text_field :name, class: "form-control"
+
+              = l.label :url
+              = l.text_area :url, class: "form-control"
+
+              - if l.object.persisted?
+                p.form-check.form-check-inline
+                  = l.check_box :_destroy, class: "form-check-input"
+                  = l.label :_destroy, "Del link", class: "form-check-label"
+
+            br
+
+          p= submit_tag 'Add more link', :type => 'button', class: 'add-link'
+
           p = f.submit 'Save'
 
-    - if answer.links.any?
+    - if answer.links.any? && answer.links[0].persisted?
       p Links:
       ul.links *{:class => "mb-3"}
         - answer.links.each do |link|

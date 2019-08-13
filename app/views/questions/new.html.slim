@@ -14,11 +14,14 @@ p= form_with model: question do |f|
   p Links:
   p
     = f.fields_for :links do |l|
-      p
+      .nested_link
         = l.label :name, 'Link name'
         = l.text_field :name, class: "form-control"
-      p
+
         = l.label :url
         = l.text_area :url, class: "form-control"
+
+      br
+      p= submit_tag 'Add more link', :type => 'button', class: 'add-link'
 
   p = f.submit 'Ask'

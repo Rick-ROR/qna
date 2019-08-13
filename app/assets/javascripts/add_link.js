@@ -1,9 +1,11 @@
 $(document).on('turbolinks:load', function(){
     $('.container').on('click', '.add-link', function(e) {
         e.preventDefault();
-        let links = $(this).closest('form').find('.new_link');
+        let links = $(this).closest('form').find('.nested_link');
         let number = links.length;
-        let newLink = links.first().clone().attr("id", `link-${number}`);
+        let newLink = links.first().clone();
+        // if exists in form
+        newLink.find('.form-check').remove();
 
         newLink.find('label').each(function(index, element) {
             let old_attr = $(this).attr( "for" );
@@ -13,6 +15,7 @@ $(document).on('turbolinks:load', function(){
         newLink.find('textarea, input').each(function(index, element) {
             let oldID = $(this).attr( "id" );
             let oldName = $(this).attr( "name" );
+
             $(this).val('');
             $(this).attr({
                 id: oldID.replace(/links_attributes_0/i, `links_attributes_${number}`),
