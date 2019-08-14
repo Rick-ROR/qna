@@ -11,7 +11,7 @@ feature 'User can add links to answer', %q{
   given(:user) {create(:user)}
   given!(:question) {create(:question)}
   given!(:answer) { create(:answer, question: question, author: user) }
-  given(:gist_url) {'https://gist.github.com/vkurennov/743f9367caa1039874af5a2244e1b44c'}
+  given(:gist_url) {'https://gist.github.com/Rick-ROR/1fc3a1e822599d0f79627b89938b3916'}
   given(:rnd_url) {'https://bugzilla.mozilla.org/show_bug.cgi?id=1362154'}
 
   background do
@@ -43,6 +43,27 @@ feature 'User can add links to answer', %q{
     within '.question_answers' do
       expect(page).to have_link 'My gist', href: gist_url
       expect(page).to have_link 'one link', href: rnd_url
+    end
+  end
+
+  scenario 'User adding gist to answer and view gist content on page', js: true do
+    visit question_path(question)
+
+    within 'div.new-answer' do
+
+      fill_in 'Body', with: 'My answer'
+
+      within all(".nested_link").first do
+        fill_in 'Link name', with: 'My gist'
+        fill_in 'Url', with: gist_url
+      end
+
+      click_on 'Reply'
+    end
+
+    within '.question_answers' do
+      expect(page).to have_content 'Built in matchers - RSpec Expectations.txt'
+      expect(page).to have_content 'hash usage'
     end
   end
 

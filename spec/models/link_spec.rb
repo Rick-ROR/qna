@@ -19,4 +19,19 @@ RSpec.describe Link, type: :model do
       expect(invalid.errors[:url]).to include('Ooops! URL has an invalid format.')
     end
   end
+
+  describe '#gist?' do
+    let!(:gist_link) { build(:link, url: 'https://gist.github.com/Rick-ROR/1fc3a1e822599d0f79627b89938b3916') }
+    let!(:link) { build(:link, url: 'https://www.w3schools.com/') }
+
+    it { expect(gist_link).to be_gist }
+    it { expect(link).to_not be_gist }
+  end
+
+  describe '#gist' do
+    let!(:gist_link) { build(:link, url: 'https://gist.github.com/Rick-ROR/1fc3a1e822599d0f79627b89938b3916') }
+
+    it { expect(gist_link.gist).to be_a_kind_of Array }
+    it { expect(gist_link.gist.first).to include(content: 'hash usage', name: 'Built in matchers - RSpec Expectations.txt') }
+  end
 end

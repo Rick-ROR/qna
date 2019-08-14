@@ -33,10 +33,7 @@
           p = f.submit 'Save'
 
     - if answer.links.any? && answer.links[0].persisted?
-      p Links:
-      ul.links *{:class => "mb-3"}
-        - answer.links.each do |link|
-          li= link_to link.name, link.url
+      = render 'shared/links', links: answer.links
 
     - if answer.files.attached?
       = render 'shared/files', files: answer.files
