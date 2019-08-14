@@ -28,3 +28,6 @@ p= question.body
 
 - if question.files.attached?
   = render 'shared/files', files: question.files
+
+- unless question.reward.nil?
+  blockquote.blockquote= "Reward assigned #{question.reward.title}!"

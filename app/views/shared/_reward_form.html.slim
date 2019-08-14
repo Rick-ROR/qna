@@ -1,0 +1,9 @@
+p Reward for question:
+= form.fields_for :reward do |l|
+  .nested_reward
+    = l.label :title, 'Reward title'
+    = l.text_field :title, class: "form-control"
+    p
+      = l.label :image
+      br
+      = l.file_field :image
