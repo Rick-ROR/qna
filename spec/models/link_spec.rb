@@ -32,6 +32,6 @@ RSpec.describe Link, type: :model do
     let!(:gist_link) { build(:link, url: 'https://gist.github.com/Rick-ROR/1fc3a1e822599d0f79627b89938b3916') }
 
     it { expect(gist_link.gist).to be_a_kind_of Array }
-    it { expect(gist_link.gist.first).to include(content: 'hash usage', name: 'Built in matchers - RSpec Expectations.txt') }
+    it { expect(gist_link.gist.first).to include(name: 'Built in matchers - RSpec Expectations.txt', content: 'hash usage') }
   end
 end

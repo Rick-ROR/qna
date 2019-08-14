@@ -6,7 +6,4 @@ ul.links *{:class => "mb-3"}
       - if link.gist?
         - link.gist.each do |file|
           br
-          code
-            = file[:name]
-            br
-            = file[:content]
+          = simple_format(file.values.join("\n"), {},  wrapper_tag: "code")
