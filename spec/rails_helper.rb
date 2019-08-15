@@ -73,6 +73,8 @@ RSpec.configure do |config|
 
   FactoryBot::SyntaxRunner.class_eval do
     include ActionDispatch::TestProcess
+    include ActiveSupport::Testing::FileFixtures
+    include FactoryHelper
   end
 
   Shoulda::Matchers.configure do |config|
