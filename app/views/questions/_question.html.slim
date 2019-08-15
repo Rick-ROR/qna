@@ -30,4 +30,5 @@ p= question.body
   = render 'shared/files', files: question.files
 
 - unless question.reward.nil?
-  blockquote.blockquote= "Reward assigned #{question.reward.title}!"
+  / TODO можно ли вставить ссылку в строку без html_safe?
+  blockquote.blockquote= "Reward assigned #{link_to  question.reward.title, question.reward}!".html_safe

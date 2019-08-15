@@ -30,6 +30,7 @@ RSpec.describe Answer, type: :model do
 
   describe '#make_best' do
     let!(:question) { create(:question) }
+    let!(:reward) { create(:reward, question: question) }
     let!(:answers) { create_list(:answer, 4, question: question) }
     let!(:answer) { answers.first }
 
@@ -42,6 +43,10 @@ RSpec.describe Answer, type: :model do
       answer.update(best: true)
       expect { answer_two.make_best }.to change { answer_two.reload.best }.from(false).to(true)
       .and  change { answer.reload.best }.from(true).to(false)
+    end
+
+    it "set reward for best answering a question" do
+      expect { answer.make_best }.to change(answer, :reward).to(question.reward)
     end
   end
 end
