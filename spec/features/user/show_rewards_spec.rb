@@ -5,21 +5,14 @@ feature 'User can view his rewards', %q{
   I'd like to see all my awards
 } do
   given(:user) { create(:user) }
-  given(:question) { create(:question) }
-  given(:answer) { create(:answer, question: question, author: user) }
-  given(:reward) { create(:reward, :with_image, question: question) }
+  given!(:question) { create(:question, author: user) }
+  given!(:reward) { create(:reward, :with_image, question: question) }
+  given(:author_best) { create(:user) }
+  given!(:answer) { create(:answer, question: question, author: author_best) }
 
-  background do
-    sign_in(user)
-  end
+  scenario 'user sees reward for the question', js: true do
 
-  scenario 'user sees his reward for the question', js: true do
-    # WTF? почему нужно перезагружать reward чтобы награда появилась
-    reward.reload
-    # p reward
-    # update: я понял, пока reward не вызван его и нету, тк это МЕТОД, который запоминает данные
-    # и отличие given! от given, не только в том что обычный создаёт данные один раз и запоминает,
-    # а и в том что given! ещё сам выполняется перед тестом и данные уже есть
+    sign_in(author_best)
 
     visit question_path(question)
 
@@ -33,10 +26,16 @@ feature 'User can view his rewards', %q{
   end
 
   scenario 'user sees his all rewards', js: true do
+    sign_in(user)
+    visit question_path(question)
 
-    reward.update(answer: answer)
+    within(:css, "li#answer-#{answer.id}") do
+      click_on 'make best?'
+    end
 
-    visit user_rewards_path(user)
+    sign_out
+    sign_in(author_best)
+    visit user_rewards_path(author_best)
 
     expect(page).to have_content reward.title
     expect(page).to have_content question.title
