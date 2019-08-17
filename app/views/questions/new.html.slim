@@ -1,13 +1,19 @@
 = render 'shared/errors', resource: @question
 
-p= form_with model: question do |f|
+p= form_with model: question, local: true do |f|
   = f.label :title
-  = f.text_field :title
+  = f.text_field :title, class: "form-control"
   = f.label :body
-  = f.text_area :body
+  = f.text_area :body, class: "form-control"
 
   p
     = f.label :files
+    br
     = f.file_field :files, multiple: true
+
+    = render 'shared/links_form', form: f
+
+    - question.build_reward
+    = render 'shared/reward_form', form: f
 
   p = f.submit 'Ask'

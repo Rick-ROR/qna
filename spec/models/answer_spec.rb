@@ -3,8 +3,12 @@ require 'rails_helper'
 RSpec.describe Answer, type: :model do
   it{ should belong_to(:question) }
   it{ should belong_to(:author) }
+  it{ should have_many(:links).dependent(:destroy)}
+  it{ should have_one(:reward)}
 
   it{ should validate_presence_of :body }
+
+  it{ should accept_nested_attributes_for :links }
 
   it 'have many attached files' do
     expect(Answer.new.files).to be_an_instance_of(ActiveStorage::Attached::Many)
@@ -26,6 +30,7 @@ RSpec.describe Answer, type: :model do
 
   describe '#make_best' do
     let!(:question) { create(:question) }
+    let!(:reward) { create(:reward, question: question) }
     let!(:answers) { create_list(:answer, 4, question: question) }
     let!(:answer) { answers.first }
 
@@ -38,6 +43,10 @@ RSpec.describe Answer, type: :model do
       answer.update(best: true)
       expect { answer_two.make_best }.to change { answer_two.reload.best }.from(false).to(true)
       .and  change { answer.reload.best }.from(true).to(false)
+    end
+
+    it "set reward for best answering a question" do
+      expect { answer.make_best }.to change(answer, :reward).to(question.reward)
     end
   end
 end

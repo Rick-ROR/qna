@@ -40,6 +40,7 @@ RSpec.configure do |config|
   RSpec::Matchers.define_negated_matcher :not_change, :change
 
   Capybara.javascript_driver = :selenium_chrome_headless
+  Capybara.default_max_wait_time = 5
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
@@ -72,6 +73,8 @@ RSpec.configure do |config|
 
   FactoryBot::SyntaxRunner.class_eval do
     include ActionDispatch::TestProcess
+    include ActiveSupport::Testing::FileFixtures
+    include FactoryHelper
   end
 
   Shoulda::Matchers.configure do |config|

@@ -11,5 +11,9 @@ Rails.application.routes.draw do
 
   resources :files, only: %i[destroy]
 
+  resources :users do
+    resources :rewards, shallow: true, only: %i[index show]
+  end
+
   root to: 'questions#index'
 end

@@ -1,0 +1,9 @@
+p Links:
+ul.links *{:class => "mb-3"}
+  - links.each do |link|
+    li
+      = link_to link.name, link.url
+      - if link.gist?
+        - link.gist.each do |file|
+          br
+          = simple_format(file.values.join("\n"), {},  wrapper_tag: "code")

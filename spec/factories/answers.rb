@@ -11,7 +11,7 @@ FactoryBot.define do
     end
 
     trait :with_file do
-      files { fixture_file_upload(Rails.root.join('spec','rails_helper.rb')) }
+      files { fixture_file_upload( file_fixture("yxMwBrJfQTY.jpg") ) }
     end
   end
 end

@@ -1,0 +1,7 @@
+.rewards
+  - rewards.each do |reward|
+    .reward *{:class => "col-6 col-md-2 border rounded border-primary mb-5 px-3 "}
+      h2= link_to reward.title, reward
+      h4= link_to reward.question.title, reward.question
+      - if reward.image.attached?
+        p.image= image_tag url_for(reward.image), height: '150px'

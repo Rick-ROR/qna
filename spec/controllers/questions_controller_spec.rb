@@ -5,6 +5,21 @@ RSpec.describe QuestionsController, type: :controller do
   let(:user) { create(:user) }
   before { login(user) }
 
+  describe 'GET #new' do
+    it 'assigns to new questions new link' do
+      get :new
+      expect(assigns(:exposed_question).links.first).to be_a_new(Link)
+    end
+  end
+
+  # describe 'GET #show' do
+  #   it 'assigns to new questions new link' do
+  #     get :show, params: { id: question}
+  #     expect(assigns(:exposed_answer).links.first).to be_a_new(Link)
+  #   end
+  # end
+
+
   describe 'POST #create' do
 
     context 'with valid attributes' do
@@ -34,7 +49,6 @@ RSpec.describe QuestionsController, type: :controller do
         expect(post_question).to render_template :new
       end
     end
-
   end
 
   describe 'PATCH #update' do
@@ -93,7 +107,6 @@ RSpec.describe QuestionsController, type: :controller do
         expect(flash[:notice]).to eq 'You have no rights to do this.'
       end
     end
-
   end
 
   describe 'DELETE #destroy' do

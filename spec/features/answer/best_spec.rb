@@ -7,6 +7,7 @@ feature 'Author of the question can vote for the best answer', %q{
   given(:author) { create(:user) }
   given!(:question) { create(:question, author: author) }
   given!(:answers) { create_list(:answer, 4, question: question) }
+  given(:best_msg) { 'This is best answer!' }
 
   describe 'Author of the question' do
     background do
@@ -21,10 +22,10 @@ feature 'Author of the question can vote for the best answer', %q{
         expect(page).to have_content answer.body
 
         click_on 'make best?'
-        expect(page).to have_content('This is better answer!')
+        expect(page).to have_content(best_msg)
       end
 
-      expect(page).to have_content('This is better answer!', count: 1)
+      expect(page).to have_content(best_msg, count: 1)
       expect(page.first('ul.question_answers > li')[:id]).to eq("answer-#{answer.id}")
     end
 
@@ -32,15 +33,15 @@ feature 'Author of the question can vote for the best answer', %q{
 
       within(:css, "li#answer-#{answers.first.id}") do
         click_on 'make best?'
-        expect(page).to have_content('This is better answer!')
+        expect(page).to have_content(best_msg)
       end
 
       within(:css, "li#answer-#{answers.last.id}") do
         click_on 'make best?'
-        expect(page).to have_content('This is better answer!')
+        expect(page).to have_content(best_msg)
       end
 
-      expect(page).to have_content('This is better answer!', count: 1)
+      expect(page).to have_content(best_msg, count: 1)
       expect(page.find('ul.question_answers', match: :first)).to have_content answers.last.body
     end
 
