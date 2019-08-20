@@ -7,12 +7,15 @@ $(document).on('turbolinks:load', function(){
     });
 
     $('form.new-answer').on('ajax:success', function(e){
-        let xhr = e.detail[2];
-        $('.question_answers').append(xhr.responseText);
+        let answer = e.detail[0];
+        $('.question_answers').append('<p>' + answer.body + '</p>');
     })
         .on('ajax:error', function(e){
-            let xhr = e.detail[2];
-            $('.answer-errors').html(xhr.responseText);
+            console.log(e.detail);
+            let errors = e.detail[0];
+            $.each(errors, function (index, value) {
+                $('.answer-errors').append('<p>' + value + '</p>');
+            });
         })
 });
 
