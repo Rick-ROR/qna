@@ -52,6 +52,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.8'
   gem 'factory_bot_rails'
   gem 'rspec-html-matchers'
+  gem 'with_model'
 end
 
 group :development do
