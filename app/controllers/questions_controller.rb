@@ -33,11 +33,30 @@ class QuestionsController < ApplicationController
     end
   end
 
+  def vote
+    if current_user.author_of?(question)
+      redirect_to question, notice: 'You have no rights to do this.'
+    else
+      vote = Vote.find_or_initialize_by(author: current_user, votable: question)
+      # byebug
+      vote.voting(params[:vote])
+      respond_to do |format|
+        format.json { render json: { rating: "#{question.rating}" } }
+      end
+    end
+  end
+
   private
+
+  def render_json(item)
+    body = { "id": item.id, "score": item.score }
+    render json: Hash[param_name(item), body]
+  end
 
   def question_params
     params.require(:question).permit(:title,
                                      :body,
+                                     :vote,
                                      files: [],
                                      links_attributes: [:name, :url, :id, :_destroy],
                                      reward_attributes: [:title, :image]
