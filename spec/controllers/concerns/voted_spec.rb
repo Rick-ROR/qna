@@ -34,7 +34,7 @@ RSpec.describe Voted, type: :controller do
     context 'by non-author voted resource' do
       before  { login(user) }
 
-      it 'saves a new vote to given question to DB' do
+      it 'saves a new vote to given resource to DB' do
         expect { voting }.to change(anon.votes, :count).by(1)
       end
 
@@ -57,8 +57,8 @@ RSpec.describe Voted, type: :controller do
     context 'by author voted resource' do
       before  { login(author) }
 
-      it 'does not change answer attrs' do
-        expect { voting }.to_not change(Vote,	:count)
+      it 'does not change votes count' do
+        expect { voting }.to_not change(Vote, :count)
       end
 
       it 'response status should be 422' do
