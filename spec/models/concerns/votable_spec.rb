@@ -21,6 +21,11 @@ RSpec.describe 'Votable' do
     expect(WithVotable).to be
   end
 
+
+  it "should have many :votes" do
+    expect(WithVotable.reflect_on_association(:votes).macro).to eq(:has_many)
+  end
+
   it "should have many votes" do
     some = WithVotable.create!
     # #<Vote id: 1006, state: true, votable_type: nil, votable_id: nil, author_id: 1005, created_at: "2019-08-28 01:12:13", updated_at: "2019-08-28 01:12:13">

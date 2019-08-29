@@ -1,6 +1,8 @@
 ul.votable.list-inline
   li.list-inline-item.rating
-    h4= "Rating: #{resource.rating}"
+    h4
+      = "Rating: "
+      span = resource.rating
   - if current_user && !current_user&.author_of?(resource)
     li.list-inline-item.voteup
       = link_to "#{octicon "arrow-up", :height => 28}".html_safe,

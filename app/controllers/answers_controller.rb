@@ -18,7 +18,7 @@ class AnswersController < ApplicationController
     if current_user.author_of?(answer)
       answer.update(answer_params)
     else
-      redirect_to @question, notice: 'You have no rights to do this.'
+      redirect_to @question, alert: 'You have no rights to do this.'
     end
   end
 
@@ -26,7 +26,7 @@ class AnswersController < ApplicationController
     if current_user.author_of?(answer)
       answer.destroy
     else
-      redirect_to answer.question, notice: 'You have no rights to do this.'
+      redirect_to answer.question, alert: 'You have no rights to do this.'
     end
   end
 
@@ -34,7 +34,7 @@ class AnswersController < ApplicationController
     if current_user.author_of?(answer.question)
       answer.make_best
     else
-      redirect_to answer.question, notice: 'You have no rights to do this.'
+      redirect_to answer.question, alert: 'You have no rights to do this.'
     end
   end
 

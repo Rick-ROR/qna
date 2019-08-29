@@ -21,7 +21,6 @@ feature 'User can delete his answer', %q(
         within('.answer_actions') { click_link 'Delete' }
       end
 
-      expect(page).to have_content 'Your answer was successfully deleted.'
       expect(page).to have_no_content answer.body
     end
 
