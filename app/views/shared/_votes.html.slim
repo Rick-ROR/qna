@@ -7,10 +7,10 @@ ul.votable.list-inline
 
     li.list-inline-item.voteup
       = link_to "#{octicon "arrow-up", :height => 28}".html_safe,
-              send(resource.vote_path, {:id => resource, :vote => "1"}),
+              polymorphic_path([:vote, resource], :vote => "1"),
               method: :patch, remote: true, data: { type: :json }, class: 'voteup'
 
     li.list-inline-item.votedown
       = link_to "#{octicon "arrow-down", :height => 28}".html_safe,
-              send(resource.vote_path, {:id => resource, :vote => "-1"}),
+              polymorphic_path([:vote, resource], :vote => "-1"),
               method: :patch, remote: true, data: { type: :json }, class: 'votedown'

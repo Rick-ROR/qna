@@ -27,15 +27,4 @@ RSpec.describe 'Votable' do
     expect(some.rating).to eq 2
   end
 
-  it "#vote_path" do
-    some = WithVotable.create!
-    expect("vote_#{some.class.name.singularize.underscore}_path").to eq "vote_with_votable_path"
-  end
-
-  it "#by_user(user)" do
-    some = WithVotable.create!
-    some.votes.create!(vote.attributes.merge({ author: user}))
-    expect(some.by_user(user).first.author).to eq user
-  end
-
 end
