@@ -1,9 +1,9 @@
 class Answer < ApplicationRecord
+  include Authorable
   include Linkable
   include Votable
 
   belongs_to :question
-  belongs_to :author, class_name: 'User'
   has_one :reward
 
   validates :body, presence: true

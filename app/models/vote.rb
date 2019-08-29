@@ -1,6 +1,7 @@
 class Vote < ApplicationRecord
+  include Authorable
+
   belongs_to :votable, polymorphic: true
-  belongs_to :author, class_name: 'User'
 
   validates :state, inclusion: { in: [true, false] }
   validates :author_id, uniqueness: { scope: [:votable_type, :votable_id], case_sensitive: false }

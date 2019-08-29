@@ -1,9 +1,9 @@
 class Question < ApplicationRecord
+  include Authorable
   include Linkable
   include Votable
 
   has_many :answers, dependent: :destroy
-  belongs_to :author, class_name: 'User'
   has_one :reward, dependent: :destroy
 
   has_many_attached :files
