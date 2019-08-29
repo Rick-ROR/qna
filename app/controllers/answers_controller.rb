@@ -1,7 +1,8 @@
 class AnswersController < ApplicationController
-  include Voted
 
-  before_action :authenticate_user!, only: [:create]
+  before_action :authenticate_user!
+
+  include Voted
 
   expose :answers, ->{ Answer.all }
   expose :answer, -> { params[:id] ? Answer.with_attached_files.find(params[:id]) : Answer.new }

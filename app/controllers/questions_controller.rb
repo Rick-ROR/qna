@@ -1,7 +1,9 @@
 class QuestionsController < ApplicationController
-  include Voted
 
   before_action :authenticate_user!, except: [:index, :show]
+
+  include Voted
+
   before_action -> { question.links.build }, only: [:new, :create]
 
   expose :questions, ->{ Question.all.order(created_at: :desc) }
