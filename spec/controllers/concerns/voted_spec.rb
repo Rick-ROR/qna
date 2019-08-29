@@ -1,8 +1,11 @@
 require 'rails_helper'
 
+class MoviesController < ApplicationController
+end
+
 RSpec.describe Voted, type: :controller do
 
-  with_model :Anonymous do
+  with_model :Movie do
     table do |t|
       t.integer :author_id
     end
@@ -13,18 +16,18 @@ RSpec.describe Voted, type: :controller do
     end
   end
 
-  controller ApplicationController do
+  controller MoviesController do
     include Voted
   end
 
   before do
-    routes.draw { patch :vote, to: "anonymous#vote"}
+    routes.draw { patch :vote, to: "movies#vote"}
   end
 
   describe 'PATCH #vote' do
     let(:user) { create(:user) }
     let(:author) { create(:user) }
-    let(:anon) { Anonymous.create!(author: author) }
+    let(:anon) { Movie.create!(author: author) }
     let(:voting) { patch :vote, params: { id: anon.id, vote: "true" }, format: :json }
 
 

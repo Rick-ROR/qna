@@ -14,7 +14,7 @@
 # ActiveSupport::Inflector.inflections(:en) do |inflect|
 #   inflect.acronym 'RESTful'
 # end
-
-ActiveSupport::Inflector.inflections do |inflect|
-  inflect.singular('anonymous', 'anonymous')
-end
+#
+# ActiveSupport::Inflector.inflections do |inflect|
+#   inflect.singular('anonymous', 'anonymous')
+# end
