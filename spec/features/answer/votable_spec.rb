@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-feature 'User can vote for the question', %q{
-  I'd like to be able to vote on questions from other users;
+feature 'User can vote for the answer', %q{
+  I'd like to be able to vote on answers from other users;
   I'd like to be able to re-vote;
   User can vote only once for/against in a row;
 } do
@@ -9,26 +9,27 @@ feature 'User can vote for the question', %q{
   given(:user) { create(:user) }
   given(:author) { create(:user) }
   given!(:question) { create(:question, author: author) }
+  given!(:answer) { create(:answer, question: question, author: author) }
 
   describe "Authenticated user" do
-    context 'not author of question' do
+    context 'not author of answer' do
       background do
         sign_in(user)
         visit question_path(question)
       end
 
-      scenario 'User voteup for the question', js: true do
-        within('.question_box') do
-          expect(page).to have_link nil, href: "/questions/#{question.id}/vote?vote=true"
+      scenario 'User voteup for the answer', js: true do
+        within('.question_answers') do
+          expect(page).to have_link nil, href: "/answers/#{answer.id}/vote?vote=true"
 
           click_on(class: 'voteup')
           expect(page).to have_content 'Rating: 1'
         end
       end
 
-      scenario 'User votedown for the question', js: true do
-        within('.question_box') do
-          expect(page).to have_link nil, href: "/questions/#{question.id}/vote?vote=false"
+      scenario 'User votedown for the answer', js: true do
+        within('.question_answers') do
+          expect(page).to have_link nil, href: "/answers/#{answer.id}/vote?vote=false"
 
           find('a.votedown').click
           expect(page).to have_content 'Rating: -1'
@@ -37,14 +38,14 @@ feature 'User can vote for the question', %q{
     end
 
 
-    context 'author of question' do
+    context 'author of answer' do
       background do
         sign_in(author)
         visit question_path(question)
       end
 
       scenario 'trying to vote', js: true do
-        within('.question_box') do
+        within('.question_answers') do
           expect(page).to have_no_selector("voteup")
           expect(page).to have_no_selector("votedown")
         end
@@ -57,7 +58,7 @@ feature 'User can vote for the question', %q{
     scenario 'trying to vote', js: true do
       visit question_path(question)
 
-      within('.question_box') do
+      within('.question_answers') do
         expect(page).to have_no_selector("voteup")
         expect(page).to have_no_selector("votedown")
       end

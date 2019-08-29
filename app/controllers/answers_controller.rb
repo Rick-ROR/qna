@@ -1,4 +1,6 @@
 class AnswersController < ApplicationController
+  include Voted
+
   before_action :authenticate_user!, only: [:create]
 
   expose :answers, ->{ Answer.all }
@@ -39,7 +41,11 @@ class AnswersController < ApplicationController
   private
 
   def answer_params
-    params.require(:answer).permit(:body, files: [], links_attributes: [:name, :url, :id, :_destroy])
+    params.require(:answer).permit(:body,
+                                   Voted::STRONG_PARAMS,
+                                   files: [],
+                                   links_attributes: [:name, :url, :id, :_destroy]
+                                  )
   end
 
 end

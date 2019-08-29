@@ -8,6 +8,8 @@
 
     p= answer.body
 
+    = render 'shared/votes', resource: answer
+
     ul.answer_actions *{:class => "list-inline mb-2"}
       - if current_user&.author_of?(answer.question)
         li.list-inline-item= link_to 'make best?', best_answer_path(answer), method: :patch, class: "best-answer-link", data: {answer_id: answer.id}, remote: true
