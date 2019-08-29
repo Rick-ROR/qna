@@ -3,10 +3,10 @@ FactoryBot.define do
     association :author, factory: :user
     association :votable, factory: :question
 
-    state { true }
+    state { 1 }
 
     trait :randomly do
-      state { [true, false].sample }
+      state { [1, -1].sample }
     end
   end
 end

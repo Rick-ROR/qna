@@ -12,7 +12,7 @@ module Voted
         format.json { render json: { errors: "#{@votable.class}-author cannot vote" }, status: :unprocessable_entity }
       else
         vote = Vote.find_or_initialize_by(author: current_user, votable: @votable)
-        vote.voting(params[:vote])
+        vote.voting(params[:vote].to_i)
         format.json { render json: { rating: "#{@votable.rating}" } }
       end
     end

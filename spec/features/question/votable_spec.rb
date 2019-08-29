@@ -19,7 +19,7 @@ feature 'User can vote for the question', %q{
 
       scenario 'User voteup for the question', js: true do
         within('.question_box') do
-          expect(page).to have_link nil, href: "/questions/#{question.id}/vote?vote=true"
+          expect(page).to have_link nil, href: "/questions/#{question.id}/vote?vote=1"
 
           click_on(class: 'voteup')
           expect(page).to have_content 'Rating: 1'
@@ -28,7 +28,7 @@ feature 'User can vote for the question', %q{
 
       scenario 'User votedown for the question', js: true do
         within('.question_box') do
-          expect(page).to have_link nil, href: "/questions/#{question.id}/vote?vote=false"
+          expect(page).to have_link nil, href: "/questions/#{question.id}/vote?vote=-1"
 
           find('a.votedown').click
           expect(page).to have_content 'Rating: -1'

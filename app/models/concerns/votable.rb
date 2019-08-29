@@ -9,9 +9,7 @@ module Votable
     end
 
     def rating
-      scores = self.votes.select(:state).group(:state).count
-      scores.default = 0
-      scores[true] - scores[false]
+      votes.sum(:state)
     end
 
     def vote_path

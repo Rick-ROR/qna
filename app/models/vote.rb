@@ -3,12 +3,10 @@ class Vote < ApplicationRecord
 
   belongs_to :votable, polymorphic: true
 
-  validates :state, inclusion: { in: [true, false] }
+  validates :state, inclusion: { in: [1, -1] }
   validates :author_id, uniqueness: { scope: [:votable_type, :votable_id], case_sensitive: false }
 
   def voting(state)
-    state = ActiveRecord::Type::Boolean.new.cast(state)
-
     if twice?(state)
       self.destroy!
     else

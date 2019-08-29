@@ -23,7 +23,7 @@ RSpec.describe 'Votable' do
     expect(some.rating).to eq 0
 
     create_list(:vote, 3, votable: some)
-    create(:vote, votable: some, state: false)
+    create(:vote, votable: some, state: -1)
     expect(some.rating).to eq 2
   end
 

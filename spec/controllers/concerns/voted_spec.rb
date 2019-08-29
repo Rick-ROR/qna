@@ -28,7 +28,7 @@ RSpec.describe Voted, type: :controller do
     let(:user) { create(:user) }
     let(:author) { create(:user) }
     let(:anon) { Movie.create!(author: author) }
-    let(:voting) { patch :vote, params: { id: anon.id, vote: "true" }, format: :json }
+    let(:voting) { patch :vote, params: { id: anon.id, vote: 1 }, format: :json }
 
 
     context 'by non-author voted resource' do
@@ -43,7 +43,7 @@ RSpec.describe Voted, type: :controller do
       end
 
       it 'un-vote (twice same vote) should be delete vote' do
-        anon.votes.create!(author: user, state: "true")
+        anon.votes.create!(author: user, state: 1)
         expect { voting }.to change(Vote,	:count).by(-1)
       end
 
