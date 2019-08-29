@@ -1,4 +1,6 @@
 class QuestionsController < ApplicationController
+  include Voted
+
   before_action :authenticate_user!, except: [:index, :show]
   before_action -> { question.links.build }, only: [:new, :create]
 
@@ -30,19 +32,6 @@ class QuestionsController < ApplicationController
       redirect_to questions_path, notice: 'Your question was successfully deleted.'
     else
       redirect_to question, notice: 'You have no rights to do this.'
-    end
-  end
-
-  def vote
-    if current_user.author_of?(question)
-      redirect_to question, notice: 'You have no rights to do this.'
-    else
-      vote = Vote.find_or_initialize_by(author: current_user, votable: question)
-      # byebug
-      vote.voting(params[:vote])
-      respond_to do |format|
-        format.json { render json: { rating: "#{question.rating}" } }
-      end
     end
   end
 

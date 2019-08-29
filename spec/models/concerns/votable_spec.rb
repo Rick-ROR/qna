@@ -48,5 +48,4 @@ RSpec.describe 'Votable' do
     expect(some.by_user(user).first.author).to eq user
   end
 
-
 end

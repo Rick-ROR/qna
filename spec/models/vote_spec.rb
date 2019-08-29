@@ -14,11 +14,6 @@ RSpec.describe Vote, type: :model do
     it { should validate_uniqueness_of(:author_id).scoped_to([:votable_type, :votable_id]).case_insensitive }
   end
 
-  # ActiveRecord::InvalidForeignKey:
-  #   PG::ForeignKeyViolation: ERROR:  insert or update on table "votes" violates foreign key constraint "fk_rails_96086a30ba"
-  # DETAIL:  Key (author_id)=(0) is not present in table "users".
-  # : UPDATE "votes" SET "author_id" = $1, "updated_at" = $2 WHERE "votes"."id" = $3
-
   describe '#twice?' do
     let!(:vote) { create(:vote) }
 
