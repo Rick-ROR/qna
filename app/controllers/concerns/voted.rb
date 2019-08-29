@@ -1,21 +1,18 @@
 module Voted
   extend ActiveSupport::Concern
+  STRONG_PARAMS = %i[ :vote ].freeze
 
   included do
     before_action :set_votable, only: :vote
   end
 
   def vote
-    if current_user.author_of?(@votable)
-      respond_to do |format|
+    respond_to do |format|
+      if current_user.author_of?(@votable)
         format.json { render json: { errors: "#{@votable.class}-author cannot vote" }, status: :unprocessable_entity }
-      end
-    else
-      vote = Vote.find_or_initialize_by(author: current_user, votable: @votable)
-
-      vote.voting(params[:vote])
-
-      respond_to do |format|
+      else
+        vote = Vote.find_or_initialize_by(author: current_user, votable: @votable)
+        vote.voting(params[:vote])
         format.json { render json: { rating: "#{@votable.rating}" } }
       end
     end

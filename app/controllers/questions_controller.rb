@@ -46,9 +46,10 @@ class QuestionsController < ApplicationController
     params.require(:question).permit(:title,
                                      :body,
                                      :vote,
+                                     Voted::STRONG_PARAMS,
                                      files: [],
                                      links_attributes: [:name, :url, :id, :_destroy],
-                                     reward_attributes: [:title, :image]
+                                     reward_attributes: [:title, :image],
                                      )
   end
 

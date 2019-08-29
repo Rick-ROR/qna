@@ -5,9 +5,6 @@ class Vote < ApplicationRecord
   validates :state, inclusion: { in: [true, false] }
   validates :author_id, uniqueness: { scope: [:votable_type, :votable_id], case_sensitive: false }
 
-  scope :truly, -> { where(state: true) }
-  scope :falsely, -> { where(state: false) }
-
   def voting(state)
     state = ActiveRecord::Type::Boolean.new.cast(state)
 
