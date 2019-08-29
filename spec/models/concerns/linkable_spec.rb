@@ -12,16 +12,7 @@ RSpec.describe 'Linkable' do
 
   let(:link) { build(:link) }
 
-  it "has the module" do
-    expect(WithLinkable.include?(Linkable)).to eq true
-  end
-
-  it "can be accessed as a constant" do
-    expect(WithLinkable).to be
-  end
-
-  it "should have many links" do
-    some = WithLinkable.create!
-    expect(some.links.create!(link.attributes).linkable).to eq some
+  it "should have many :links" do
+    expect(WithLinkable.reflect_on_association(:links).macro).to eq(:has_many)
   end
 end

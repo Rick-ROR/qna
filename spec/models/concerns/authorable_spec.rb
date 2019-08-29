@@ -14,15 +14,7 @@ RSpec.describe 'Authorable' do
 
   let(:user) { create(:user) }
 
-  it "has the module" do
-    expect(WithAuthorable.include?(Authorable)).to eq true
-  end
-
-  it "can be accessed as a constant" do
-    expect(WithAuthorable).to be
-  end
-
   it "should have belongs_to :author" do
-    expect( WithAuthorable.create!( author: user ).author ).to eq user
+    expect(WithAuthorable.reflect_on_association(:author).macro).to eq(:belongs_to)
   end
 end

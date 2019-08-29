@@ -13,26 +13,11 @@ RSpec.describe 'Votable' do
   let(:user) { create(:user) }
   let!(:vote) { build_stubbed(:vote) }
 
-  it "has the module" do
-    expect(WithVotable.include?(Votable)).to eq true
-  end
-
-  it "can be accessed as a constant" do
-    expect(WithVotable).to be
-  end
-
-
-  it "should have many :votes" do
-    expect(WithVotable.reflect_on_association(:votes).macro).to eq(:has_many)
-  end
-
   it "should have many votes" do
     some = WithVotable.create!
-    # #<Vote id: 1006, state: true, votable_type: nil, votable_id: nil, author_id: 1005, created_at: "2019-08-28 01:12:13", updated_at: "2019-08-28 01:12:13">
-    # expect(some.votes.create!(vote.attributes).votable).to eq some
-    # Validation failed: Author must exist
     expect(some.votes.create!(vote.attributes.merge({ author: user}) ).votable).to eq some
   end
+
   it "#rating" do
     some = WithVotable.create!
     expect(some.rating).to eq 0

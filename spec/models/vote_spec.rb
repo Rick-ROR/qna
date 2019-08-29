@@ -9,6 +9,10 @@ RSpec.describe Vote, type: :model do
       in_array([true, false])
   end
 
+  it "has the module Authorable" do
+    expect(described_class.include?(Authorable)).to eq true
+  end
+
   describe "associations" do
     subject { FactoryBot.create(:vote) }
     it { should validate_uniqueness_of(:author_id).scoped_to([:votable_type, :votable_id]).case_insensitive }
