@@ -104,7 +104,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
 
       it 'flashes message with error' do
-        expect(flash[:notice]).to eq 'You have no rights to do this.'
+        expect(flash[:alert]).to eq 'You have no rights to do this.'
       end
     end
   end

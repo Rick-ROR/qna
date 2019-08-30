@@ -15,7 +15,7 @@ class FilesController < ApplicationController
         render template: 'answers/update.js.erb', :locals => {answer: resource}
       end
     else
-      redirect_to is_question?(resource) ? resource : resource.question, notice: 'You have no rights to do this.'
+      redirect_to is_question?(resource) ? resource : resource.question, alert: 'You have no rights to do this.'
     end
   end
 end

@@ -13,6 +13,8 @@ class Link < ApplicationRecord
 
   def gist
     Octokit::Client.new.gist(url.split('/').last).files.map { |file| { name: file[0].to_s, content: file[1]['content'] } }
+  rescue Faraday::ConnectionFailed, Octokit::TooManyRequests => ex
+    [ {name: ex.class, content: ex.message} ]
   end
 end
 

@@ -36,6 +36,7 @@ RSpec.configure do |config|
   config.include ControllerHelpers, type: :controller
   config.include FeatureHelpers, type: :feature
   config.include RSpecHtmlMatchers
+  config.extend WithModel
 
   RSpec::Matchers.define_negated_matcher :not_change, :change
 

@@ -28,11 +28,11 @@ feature 'User can answer the question', %q(
 
     scenario 'answer the question with attached file', js: true do
       fill_in 'Body', with: 'text text text'
-      attach_file 'Files', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+      attach_file 'Files', [file_fixture("Ellesmere.rom"), file_fixture("yxMwBrJfQTY.jpg")]
 
       click_on 'Reply'
-      expect(page).to have_link 'rails_helper.rb'
-      expect(page).to have_link 'spec_helper.rb'
+      expect(page).to have_link 'Ellesmere.rom'
+      expect(page).to have_link 'yxMwBrJfQTY.jpg'
     end
 
   end

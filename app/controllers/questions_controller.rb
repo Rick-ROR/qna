@@ -1,8 +1,12 @@
 class QuestionsController < ApplicationController
+
   before_action :authenticate_user!, except: [:index, :show]
+
+  include Voted
+
   before_action -> { question.links.build }, only: [:new, :create]
 
-  expose :questions, ->{ Question.all }
+  expose :questions, ->{ Question.all.order(created_at: :desc) }
   expose :question, -> { params[:id] ? Question.with_attached_files.find(params[:id]) : Question.new }
 
   def create
@@ -20,7 +24,7 @@ class QuestionsController < ApplicationController
     if current_user.author_of?(@question)
       @question.update(question_params)
     else
-      redirect_to @question, notice: 'You have no rights to do this.'
+      redirect_to @question, alert: 'You have no rights to do this.'
     end
   end
 
@@ -29,7 +33,7 @@ class QuestionsController < ApplicationController
       question.destroy
       redirect_to questions_path, notice: 'Your question was successfully deleted.'
     else
-      redirect_to question, notice: 'You have no rights to do this.'
+      redirect_to question, alert: 'You have no rights to do this.'
     end
   end
 
@@ -38,9 +42,11 @@ class QuestionsController < ApplicationController
   def question_params
     params.require(:question).permit(:title,
                                      :body,
+                                     :vote,
+                                     Voted::STRONG_PARAMS,
                                      files: [],
                                      links_attributes: [:name, :url, :id, :_destroy],
-                                     reward_attributes: [:title, :image]
+                                     reward_attributes: [:title, :image],
                                      )
   end
 
