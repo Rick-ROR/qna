@@ -11,7 +11,7 @@ $ ->
   App.cable.subscriptions.create('QuestionsChannel', {
     connected: ->
       console.log 'hey guys!'
-      @perform 'tell_me', text: 'why7'
+      @perform 'echo', text: 'why7'
       ,
     received: (data) ->
       console.log 'received', data

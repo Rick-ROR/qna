@@ -1,5 +1,5 @@
 class QuestionsChannel < ApplicationCable::Channel
-  def tell_me(data)
-    Rails.logger.info data
+  def echo(data)
+    transmit data
   end
 end
