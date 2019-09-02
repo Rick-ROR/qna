@@ -11,8 +11,12 @@ $ ->
   App.cable.subscriptions.create('QuestionsChannel', {
     connected: ->
       console.log 'hey guys!'
-      @perform 'echo', text: 'why7'
+      @perform 'follow'
+#      setTimeout ->
+#        $("ul.questions").prepend '<li class="question">DUP DUP DUP</li>'
+#      , 15000
       ,
     received: (data) ->
       console.log 'received', data
+      $("ul.questions").prepend data
   })

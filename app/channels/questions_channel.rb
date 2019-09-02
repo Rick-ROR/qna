@@ -1,5 +1,5 @@
 class QuestionsChannel < ApplicationCable::Channel
-  def echo(data)
-    transmit data
+  def follow
+    stream_from 'questions'
   end
 end

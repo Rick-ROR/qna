@@ -6,6 +6,8 @@ class QuestionsController < ApplicationController
 
   before_action -> { question.links.build }, only: [:new, :create]
 
+  after_action :publish_question, only: :create
+
   expose :questions, ->{ Question.all.order(created_at: :desc) }
   expose :question, -> { params[:id] ? Question.with_attached_files.find(params[:id]) : Question.new }
 
@@ -38,6 +40,17 @@ class QuestionsController < ApplicationController
   end
 
   private
+
+  def publish_question
+    return if @question.errors.any?
+    ActionCable.server.broadcast "questions",
+      ApplicationController.render(
+                            partial: 'questions/question_simple',
+                            locals: { question: @question }
+      )
+    #   "<li class=\"question\"><a href=\"/questions/\"#{@question.id}\"\">#{@question.title}</a></li>"
+
+  end
 
   def question_params
     params.require(:question).permit(:title,
