@@ -1,7 +1,8 @@
-.question_box *{:class => "border rounded border-primary mb-5 px-3"}
+.question_box *{:class => "border rounded border-primary mb-5 px-3", data: { question_id: question.id }}
   = render question
 
 ul.question_answers
   = render question.answers.with_attached_files
 
-= render 'answers/new', answer: question.answers.new
+- if current_user
+  = render 'answers/new', answer: question.answers.new

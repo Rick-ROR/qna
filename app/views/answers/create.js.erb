@@ -1,8 +1,8 @@
 $('.answer-errors').html('<%= render 'shared/errors', resource: @answer %>');
 
 <% if @answer.persisted? %>
-  $('.question_answers').append('<%= j render @answer %>');
-  let newAnswer = $('.new-answer')
+  $('.question_answers').prepend('<%= j render @answer %>');
+  newAnswer = $('.new-answer')
   newAnswer.find('#answer_body').val('');
   newAnswer.find('#answer_links_attributes_0_name').val('');
   newAnswer.find('#answer_links_attributes_0_url').val('');

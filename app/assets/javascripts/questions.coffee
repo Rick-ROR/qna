@@ -6,17 +6,3 @@ $(document).on 'turbolinks:load', ->
     $('form#edit-question-' + questionId).removeClass 'hidden'
     return
   return
-
-$ ->
-  App.cable.subscriptions.create('QuestionsChannel', {
-    connected: ->
-      console.log 'hey guys!'
-      @perform 'follow'
-#      setTimeout ->
-#        $("ul.questions").prepend '<li class="question">DUP DUP DUP</li>'
-#      , 15000
-      ,
-    received: (data) ->
-      console.log 'received', data
-      $("ul.questions").prepend data
-  })
