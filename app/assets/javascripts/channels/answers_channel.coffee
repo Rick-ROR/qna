@@ -1,5 +1,5 @@
 $(document).on 'turbolinks:load', ->
-  questionId = $('.question_box').data 'question_id'
+  questionId = $('.question_box').data 'question-id'
   console.log questionId
 
   if questionId

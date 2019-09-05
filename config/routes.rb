@@ -8,7 +8,11 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :questions, concerns: [:votable] do
+  concern :commentable do
+    resource :comments, only: %i[create]
+  end
+
+  resources :questions, concerns: [:votable, :commentable] do
     resources :answers, concerns: [:votable], shallow: true, only: %i[create update destroy] do
       member do
         patch :best

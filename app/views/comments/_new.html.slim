@@ -1,0 +1,10 @@
+.new-comment *{:class => "border rounded border-info mb-5 p-3"}
+  h5= "Add your comment:"
+  .comment-errors
+    = render 'shared/errors', resource: @comment
+
+  = form_with model: [question, comment], class: 'new-comment' do |f|
+    p
+      = f.text_area :body, class: "form-control"
+
+    = f.submit 'Reply'

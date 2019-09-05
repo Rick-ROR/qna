@@ -15,23 +15,29 @@ feature 'User can answer the question', %q(
     end
 
     scenario 'answers the question', js: true do
-      fill_in 'Body', with: 'user answer'
-      click_on 'Reply'
+      within('form.new-answer') do
+        fill_in 'Body', with: 'user answer'
+        click_on 'Reply'
+      end
 
       expect(page).to have_content 'user answer'
     end
 
     scenario 'answers the question with errors', js: true do
-      click_on 'Reply'
+      within('form.new-answer') do
+        click_on 'Reply'
+      end
 
       expect(page).to have_content "Body can't be blank"
     end
 
     scenario 'answer the question with attached file', js: true do
-      fill_in 'Body', with: 'text text text'
-      attach_file 'Files', [file_fixture("Ellesmere.rom"), file_fixture("yxMwBrJfQTY.jpg")]
+      within('form.new-answer') do
+        fill_in 'Body', with: 'text text text'
+        attach_file 'Files', [file_fixture("Ellesmere.rom"), file_fixture("yxMwBrJfQTY.jpg")]
 
-      click_on 'Reply'
+        click_on 'Reply'
+      end
       expect(page).to have_link 'Ellesmere.rom'
       expect(page).to have_link 'yxMwBrJfQTY.jpg'
     end
@@ -50,8 +56,10 @@ feature 'User can answer the question', %q(
       end
 
       Capybara.using_session('user') do
-        fill_in 'Body', with: 'Искусство подражает жизни, жизнь тоже может подражать искусству'
-        click_on 'Reply'
+        within('form.new-answer') do
+          fill_in 'Body', with: 'Искусство подражает жизни, жизнь тоже может подражать искусству'
+          click_on 'Reply'
+        end
 
         within '.question_answers' do
           expect(page).to have_content 'Искусство подражает жизни, жизнь тоже может подражать искусству'

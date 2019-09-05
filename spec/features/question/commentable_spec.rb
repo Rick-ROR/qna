@@ -14,12 +14,12 @@ feature 'user can leave a comment on the question', %q{
     end
 
     scenario 'User adding comment', js: true do
+      within('.question_box') do
+        fill_in 'comment_body', with: 'another chance'
+        click_on 'Reply'
+        expect(page).to have_content 'another chance'
+      end
 
-      click_on 'Add comment'
-      fill_in 'comment', with: 'another chance'
-      click_on 'Reply'
-
-      expect(page).to have_content 'another chance'
     end
 
   end
