@@ -3,7 +3,7 @@
   .comment-errors
     = render 'shared/errors', resource: @comment
 
-  = form_with model: [question, comment], class: 'new-comment' do |f|
+  = form_with model: [comment.commentable, comment], class: 'new-comment' do |f|
     p
       = f.text_area :body, class: "form-control"
 

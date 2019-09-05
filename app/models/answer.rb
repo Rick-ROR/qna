@@ -2,6 +2,7 @@ class Answer < ApplicationRecord
   include Authorable
   include Linkable
   include Votable
+  include Commentable
 
   belongs_to :question
   has_one :reward

@@ -2,7 +2,7 @@
   = render question
 
 
-  div[id="question-#{question.id}" class="comments"]
+  div[id="comments-question-#{question.id}" class="comments"]
     - if current_user
       = render 'comments/new', comment: question.comments.new
 
