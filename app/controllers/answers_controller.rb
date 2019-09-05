@@ -43,7 +43,7 @@ class AnswersController < ApplicationController
     return if @answer.errors.any?
 
     AnswersChannel.broadcast_to(
-      @answer.question.id,
+      @answer.question,
       answer: @answer,
       files: @answer.files.map { |file| { id: file.id, name: file.filename.to_s, url: url_for(file) } },
       links: @answer.links.select(&:persisted?)

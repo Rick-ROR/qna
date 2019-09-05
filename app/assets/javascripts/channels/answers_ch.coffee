@@ -1,11 +1,9 @@
 $(document).on 'turbolinks:load', ->
   questionId = $('.question_box').data 'question-id'
-  console.log questionId
 
   if questionId
     App.cable.subscriptions.create { channel: 'AnswersChannel', id: questionId },
       connected: ->
-        console.log this.identifier
         @perform 'follow',
       received: (data) ->
         if gon.user != data.answer.author_id
