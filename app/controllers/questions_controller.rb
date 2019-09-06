@@ -6,6 +6,8 @@ class QuestionsController < ApplicationController
 
   before_action -> { question.links.build }, only: [:new, :create]
 
+  after_action :pub_question, only: :create
+
   expose :questions, ->{ Question.all.order(created_at: :desc) }
   expose :question, -> { params[:id] ? Question.with_attached_files.find(params[:id]) : Question.new }
 
@@ -21,11 +23,7 @@ class QuestionsController < ApplicationController
 
   def update
     @question = Question.find(params[:id])
-    if current_user.author_of?(@question)
-      @question.update(question_params)
-    else
-      redirect_to @question, alert: 'You have no rights to do this.'
-    end
+    may?(@question) ? @question.update(question_params) : no_rights(@question)
   end
 
   def destroy
@@ -38,6 +36,15 @@ class QuestionsController < ApplicationController
   end
 
   private
+
+  def pub_question
+    return if @question.errors.any?
+    ActionCable.server.broadcast "questions",
+      ApplicationController.render(
+                            partial: 'questions/question_simple',
+                            locals: { question: @question }
+      )
+  end
 
   def question_params
     params.require(:question).permit(:title,

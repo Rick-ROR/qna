@@ -24,6 +24,10 @@ RSpec.describe Question, type: :model do
     expect(described_class.include?(Votable)).to eq true
   end
 
+  it "has the module Votable" do
+    expect(described_class.include?(Commentable)).to eq true
+  end
+
   it 'have many attached files' do
     expect(Question.new.files).to be_an_instance_of(ActiveStorage::Attached::Many)
   end

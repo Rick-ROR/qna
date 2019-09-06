@@ -8,8 +8,12 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :questions, concerns: [:votable] do
-    resources :answers, concerns: [:votable], shallow: true, only: %i[create update destroy] do
+  concern :commentable do
+    resource :comments, only: %i[create]
+  end
+
+  resources :questions, concerns: [:votable, :commentable] do
+    resources :answers, concerns: [:votable, :commentable], shallow: true, only: %i[create update destroy] do
       member do
         patch :best
       end
@@ -23,4 +27,6 @@ Rails.application.routes.draw do
   end
 
   root to: 'questions#index'
+
+  mount ActionCable.server => '/cable'
 end

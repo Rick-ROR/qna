@@ -43,6 +43,31 @@ feature 'User can create question', %q{
     end
   end
 
+  describe 'multiple session', js: true do
+    scenario "question appears on another user's page" do
+      Capybara.using_session('user') do
+        sign_in(user)
+        visit new_question_path
+      end
+
+      Capybara.using_session('guest') do
+        visit questions_path
+        expect(page).to have_no_content 'Жизнь подражает Искусству в гораздо большей степени, чем Искусство подражает Жизни.'
+      end
+
+      Capybara.using_session('user') do
+
+        fill_in 'Title', with: 'Жизнь подражает Искусству в гораздо большей степени, чем Искусство подражает Жизни.'
+        fill_in 'Body', with: 'multiple session'
+        click_on 'Ask'
+      end
+
+      Capybara.using_session('guest') do
+        expect(page).to have_content 'Жизнь подражает Искусству в гораздо большей степени, чем Искусство подражает Жизни.'
+      end
+    end
+  end
+
   scenario 'Unauthenticated user tries to ask a question' do
     visit questions_path
     click_on 'Ask question'

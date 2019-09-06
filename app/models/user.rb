@@ -5,6 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_many :author_questions, foreign_key: 'author_id', class_name: 'Question'
+  has_many :author_comments, foreign_key: 'author_id', class_name: 'Comment'
   has_many :author_answers, foreign_key: 'author_id', class_name: 'Answer'
   has_many :author_votes, foreign_key: 'author_id', class_name: 'Vote'
   has_many :rewards, through: :author_answers

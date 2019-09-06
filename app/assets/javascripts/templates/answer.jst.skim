@@ -1,0 +1,28 @@
+li.answer.border-left.mb-3.px-4 id="answer-#{@answer.id}"
+  p= "#{@answer.body}"
+
+  ul.votable.list-inline
+    li.list-inline-item.rating
+      h4
+        = "Rating: "
+        span 0
+    - if gon.user && @author != gon.user
+      li.list-inline-item.voteup
+        a.voteup href="/answers/#{@answer.id}/vote?vote=1" data-method="patch" data-type="json" data-remote='true' <svg height="28" class="octicon octicon-arrow-up" viewBox="0 0 10 16" version="1.1" width="17" aria-hidden="true"><path fill-rule="evenodd" d="M5 3L0 9h3v4h4V9h3L5 3z"></path></svg>
+      li.list-inline-item.votedown
+        a.voteup href="/answers/#{@answer.id}/vote?vote=-1" data-method="patch" data-type="json" data-remote='true' <svg height="28" class="octicon octicon-arrow-down" viewBox="0 0 10 16" version="1.1" width="17" aria-hidden="true"><path fill-rule="evenodd" d="M7 7V3H3v4H0l5 6 5-6H7z"></path></svg>
+
+
+  - if @links.length
+    p Links:
+    ul.links.mb-3
+      - @links.forEach (link) ->
+        li
+          a href="#{{link.url}}" #{link.name}
+
+  - if @files.length
+    p Files:
+    ul.attached_files.mb-3
+      - @files.forEach (file) ->
+        li
+          a href="#{{file.url}}" #{file.name}
