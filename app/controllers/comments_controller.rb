@@ -27,7 +27,6 @@ class CommentsController < ApplicationController
   def pub_comment
     return if @comment.errors.any?
 
-    # byebug
     id = @commentable.class == Question ? @commentable.id : @commentable.question_id
 
     CommentsChannel.broadcast_to(
