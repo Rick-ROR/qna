@@ -4,6 +4,7 @@ RSpec.describe QnaOauthController, type: :controller do
   before do
     @request.env["devise.mapping"] = Devise.mappings[:user]
   end
+
   describe "Github" do
     let(:oauth_data) { {'provider' => 'github', 'uid' => '794'} }
 
