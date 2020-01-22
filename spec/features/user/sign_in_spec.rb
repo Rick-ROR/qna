@@ -18,6 +18,13 @@ feature 'User can sign in', %q{
     expect(page).to have_content 'Signed in successfully.'
   end
 
+  scenario 'Registered user tries to sign in with Github' do
+    mock_auth_hash
+
+    click_on 'Sign in with GitHub'
+    expect(page).to have_content 'Successfully authenticated from Github account.'
+  end
+
   scenario 'Unregistered user tries to sign in' do
     fill_in 'Email', with: 'wrong@test.com'
     fill_in 'Password', with: '12345678'
