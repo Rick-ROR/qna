@@ -9,4 +9,8 @@ class QnaOauthController < Devise::OmniauthCallbacksController
       redirect_to root_path, alert: 'Something went wrong, user 404'
     end
   end
+
+  def vkontakte
+    render json: request.env['omniauth.auth']
+  end
 end
