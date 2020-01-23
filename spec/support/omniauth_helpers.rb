@@ -6,8 +6,9 @@ module OmniauthHelpers
       'uid' => '44318'
     }
 
-    auth_hash['info'] = { 'email' => 'mockuser@example.edu' } unless email_skip
+    auth_hash['info'] = { 'email' => "mockuser_#{provider.to_s}@example.edu" } unless email_skip
 
     OmniAuth.config.mock_auth[provider] = OmniAuth::AuthHash.new(auth_hash)
   end
 end
+

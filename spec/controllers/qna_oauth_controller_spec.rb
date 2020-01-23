@@ -37,6 +37,7 @@ RSpec.describe QnaOauthController, type: :controller do
         allow(User).to receive(:find_for_oauth)
         get :github
       end
+
       it 'redirects to root path' do
         expect(response).to redirect_to root_path
       end
@@ -76,17 +77,26 @@ RSpec.describe QnaOauthController, type: :controller do
     end
 
     context 'user does no exist' do
-      before do
-        allow(User).to receive(:find_for_oauth)
-        get :vkontakte
-      end
-      it 'redirects to root path' do
-        expect(response).to redirect_to root_path
+
+      context "user with email" do
+        before do
+          allow(User).to receive(:find_for_oauth)
+          get :vkontakte
+        end
+
+        it 'redirects to root path' do
+          expect(response).to redirect_to root_path
+        end
+
+        it 'does not login user' do
+          expect(subject.current_user).to_not be
+        end
       end
 
-      it 'does not login user' do
-        expect(subject.current_user).to_not be
+      context "user doesn't have email" do
+
       end
+
     end
 
   end
