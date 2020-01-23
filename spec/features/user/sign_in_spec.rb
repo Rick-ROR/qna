@@ -18,11 +18,18 @@ feature 'User can sign in', %q{
     expect(page).to have_content 'Signed in successfully.'
   end
 
-  scenario 'Registered user tries to sign in with Github' do
-    mock_auth_hash
+  scenario 'User tries to sign in with oauth Github' do
+    mock_auth_hash(:github)
 
     click_on 'Sign in with GitHub'
     expect(page).to have_content 'Successfully authenticated from Github account.'
+  end
+
+  scenario 'User tries to sign in with oauth VK' do
+    mock_auth_hash(:vkontakte)
+
+    click_on 'Sign in with Vkontakte'
+    expect(page).to have_content 'Successfully authenticated from VK account.'
   end
 
   scenario 'Unregistered user tries to sign in' do
