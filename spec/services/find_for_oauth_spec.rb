@@ -66,6 +66,19 @@ RSpec.describe Services::FindForOauth, type: :services do
       end
     end
 
+    context 'user does not exist and doesn\'t email' do
+      let(:auth) { OmniAuth::AuthHash.new(provider: 'facebook',
+                                          uid: '123456') }
+      it 'new user is not created in DB' do
+        expect { subject.call }.to_not change(User, :count)
+      end
+
+      it 'returns new user' do
+        expect( subject.call ).to be_a(User)
+      end
+
+    end
+
   end
 
 end

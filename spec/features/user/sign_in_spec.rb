@@ -17,42 +17,6 @@ feature 'User can sign in', %q{
     expect(page).to have_content 'Signed in successfully.'
   end
 
-  scenario 'User tries to sign in with oauth Github' do
-    user_email = mock_auth_hash(:github).info.email
-
-    click_on 'Sign in with GitHub'
-    expect(page).to have_content 'You have to confirm your email address before continuing.'
-
-    open_email user_email
-    current_email.click_link 'Confirm my account'
-    expect(page).to have_content 'Your email address has been successfully confirmed.'
-
-    click_on 'Sign in with GitHub'
-    expect(page).to have_content 'Successfully authenticated from Github account.'
-  end
-
-  scenario 'User tries to sign in with oauth VK' do
-    user_email = mock_auth_hash(:vkontakte).info.email
-
-    click_on 'Sign in with Vkontakte'
-    expect(page).to have_content 'You have to confirm your email address before continuing.'
-
-    open_email user_email
-    current_email.click_link 'Confirm my account'
-    expect(page).to have_content 'Your email address has been successfully confirmed.'
-
-    click_on 'Sign in with Vkontakte'
-    expect(page).to have_content 'Successfully authenticated from VK account.'
-  end
-
-  scenario 'User tries to sign in with oauth VK w/o email' do
-    skip
-    mock_auth_hash(:vkontakte, true)
-
-    click_on 'Sign in with Vkontakte'
-    expect(page).to have_content 'Successfully authenticated from VK account.'
-  end
-
   scenario 'Unregistered user tries to sign in' do
     fill_in 'Email', with: 'wrong@test.com'
     fill_in 'Password', with: '12345678'
