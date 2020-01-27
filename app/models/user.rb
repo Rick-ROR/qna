@@ -14,11 +14,19 @@ class User < ApplicationRecord
   has_many :rewards, through: :author_answers
   has_many :authorizations, dependent: :destroy
 
+  validates :email, uniqueness: { case_sensitive: false },
+            format: { with: URI::MailTo::EMAIL_REGEXP }
+
   def author_of?(resource)
     id == resource.author_id
   end
 
   def self.find_for_oauth(auth)
     Services::FindForOauth.call(auth)
+  end
+
+  def email_valid?
+    valid?
+    errors[:email].blank?
   end
 end

@@ -14,7 +14,7 @@ RSpec.describe QnaOauthController, type: :controller do
       let(:oauth_data) { OmniAuth::AuthHash.new(provider:
                                                   provider.to_s,
                                                 uid: 5555,
-                                                info: { email: "#{provider.to_s}@mail.com" })}
+                                                info: { email: "#{provider.to_s}@example.edu" })}
       it 'finds user from oauth data' do
         allow(request.env).to receive(:[]).and_call_original
         allow(request.env).to receive(:[]).with('omniauth.auth').and_return(oauth_data)
@@ -83,6 +83,7 @@ RSpec.describe QnaOauthController, type: :controller do
       let(:post_email) { post :set_email, params: { oauth_email: user.email } }
 
       it 'redirects to root path' do
+        p user
         expect(post_email).to redirect_to root_path
       end
 
