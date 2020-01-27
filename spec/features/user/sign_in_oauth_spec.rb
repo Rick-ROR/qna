@@ -34,7 +34,7 @@ feature 'User can sign in with OAuth providers', %q{
     expect(page).to have_content 'Your email address has been successfully confirmed.'
 
     click_on 'Sign in with Vkontakte'
-    expect(page).to have_content 'Successfully authenticated from VK account.'
+    expect(page).to have_content 'Successfully authenticated from Vkontakte account.'
   end
 
   scenario 'User tries to sign up with oauth VK w/o email' do
@@ -53,7 +53,7 @@ feature 'User can sign in with OAuth providers', %q{
     expect(page).to have_content 'Your email address has been successfully confirmed.'
 
     click_on 'Sign in with Vkontakte'
-    expect(page).to have_content 'Successfully authenticated from VK account.'
+    expect(page).to have_content 'Successfully authenticated from Vkontakte account.'
   end
 
   scenario 'User tries to sign up with oauth VK w/o email and enter invalid email' do
@@ -77,6 +77,6 @@ feature 'User can sign in with OAuth providers', %q{
     visit new_user_session_path
     click_on 'Sign in with Vkontakte'
 
-    expect(page).to have_content 'Successfully authenticated from VK account.'
+    expect(page).to have_content 'Successfully authenticated from Vkontakte account.'
   end
 end
