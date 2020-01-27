@@ -11,6 +11,14 @@ RSpec.describe Services::FindForOauth, type: :services do
       user.authorizations.create(provider: 'facebook', uid: '31414')
       expect(subject.call).to eq user
     end
+
+    it 'no new user created in DB' do
+      expect{ subject.call }.to_not change(User, :count)
+    end
+
+    it 'not created new authorization' do
+      expect{ subject.call }.to_not change(Authorization, :count)
+    end
   end
 
   context 'user has not authorization' do
@@ -39,7 +47,7 @@ RSpec.describe Services::FindForOauth, type: :services do
     context 'user does not exist' do
       let(:auth) { OmniAuth::AuthHash.new(provider: 'facebook',
                                           uid: '123456',
-                                          info: { email: 'new@user.com' }) }
+                                          info: { email: 'new@example.edu' }) }
 
       it 'creates new user' do
         expect { subject.call }.to change(User, :count).by(1)
@@ -54,6 +62,10 @@ RSpec.describe Services::FindForOauth, type: :services do
         expect(user.email).to eq auth.info[:email]
       end
 
+      it 'creates authorization' do
+        expect{subject.call}.to change(Authorization, :count).by(1)
+      end
+
       it 'creates authorization for user' do
         user = subject.call
         expect(user.authorizations).to_not be_empty
@@ -64,13 +76,21 @@ RSpec.describe Services::FindForOauth, type: :services do
         expect(authorization.provider).to eq auth.provider
         expect(authorization.uid).to eq auth.uid
       end
+
+      it 'returns the user' do
+        expect( subject.call ).to be_a(User)
+      end
     end
 
     context 'user does not exist and doesn\'t email' do
       let(:auth) { OmniAuth::AuthHash.new(provider: 'facebook',
                                           uid: '123456') }
-      it 'new user is not created in DB' do
-        expect { subject.call }.to_not change(User, :count)
+      it 'no new user created in DB' do
+        expect{ subject.call }.to_not change(User, :count)
+      end
+
+      it 'not created new authorization' do
+        expect{ subject.call }.to_not change(Authorization, :count)
       end
 
       it 'returns new user' do

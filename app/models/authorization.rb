@@ -3,4 +3,5 @@ class Authorization < ApplicationRecord
 
   validates :provider, presence: true
   validates :uid, presence: true
+  validates :provider, uniqueness: { scope: :uid }
 end
