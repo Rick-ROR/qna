@@ -10,7 +10,8 @@ feature 'User can sign in with OAuth providers', %q{
   background { visit new_user_session_path }
 
   scenario 'User tries to sign up with oauth Github' do
-    user_email = mock_auth_hash(:github).info.email
+    user_email = "github_user@example.edu"
+    mock_auth_hash(provider: 'github', email: user_email)
 
     click_on 'Sign in with GitHub'
     expect(page).to have_content 'You have to confirm your email address before continuing.'
@@ -24,7 +25,8 @@ feature 'User can sign in with OAuth providers', %q{
   end
 
   scenario 'User tries to sign up with oauth VK' do
-    user_email = mock_auth_hash(:vkontakte).info.email
+    user_email = "vk_user@example.edu"
+    mock_auth_hash(provider: 'vkontakte', email: user_email)
 
     click_on 'Sign in with Vkontakte'
     expect(page).to have_content 'You have to confirm your email address before continuing.'
@@ -38,7 +40,7 @@ feature 'User can sign in with OAuth providers', %q{
   end
 
   scenario 'User tries to sign up with oauth VK w/o email' do
-    mock_auth_hash(:vkontakte, true)
+    mock_auth_hash(provider: 'vkontakte')
     user_email = "ascending_divers@example.edu"
 
     click_on 'Sign in with Vkontakte'
@@ -57,7 +59,7 @@ feature 'User can sign in with OAuth providers', %q{
   end
 
   scenario 'User tries to sign up with oauth VK w/o email and enter invalid email' do
-    mock_auth_hash(:vkontakte, true)
+    mock_auth_hash(provider: 'vkontakte')
     user_email = "0919"
 
     click_on 'Sign in with Vkontakte'
@@ -71,7 +73,7 @@ feature 'User can sign in with OAuth providers', %q{
   end
 
   scenario 'User tries to sign in with oauth VK' do
-    auth = mock_auth_hash(:vkontakte, true)
+    auth = mock_auth_hash(provider: 'vkontakte')
     create(:authorization, user: user, provider: auth.provider, uid: auth.uid)
 
     visit new_user_session_path

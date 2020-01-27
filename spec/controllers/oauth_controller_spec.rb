@@ -52,7 +52,7 @@ RSpec.describe OauthController, type: :controller do
         end
 
         it 'redirect to adding email path' do
-          expect(response).to redirect_to oauth_adding_email_path
+          expect(response).to redirect_to user_oauth_adding_email_path
         end
 
         it 'does not login user' do
@@ -65,44 +65,5 @@ RSpec.describe OauthController, type: :controller do
       end
     end
 
-  end
-
-  describe "GET #adding_email" do
-    it 'renders template :adding_email' do
-      expect(get :adding_email).to render_template(:adding_email)
-    end
-  end
-
-  describe "POST #set_email" do
-    before do
-      session['devise.oauth_provider'] = { provider: 'vkontakte', uid: '105040' }
-    end
-
-    context 'with valid attributes' do
-      let(:user) { build(:user, :unconfirmed) }
-      let(:post_email) { post :set_email, params: { oauth_email: user.email } }
-
-      it 'redirects to root path' do
-        p user
-        expect(post_email).to redirect_to root_path
-      end
-
-      it 'create user' do
-        expect{post_email}.to change(User, :count).by(1)
-      end
-    end
-
-    context 'with invalid attributes' do
-      let(:user) { build(:user, :unconfirmed) }
-      let!(:post_email) { post :set_email, params: { oauth_email: '' } }
-
-      it 'redirect to adding email path' do
-        expect(response).to redirect_to oauth_adding_email_path
-      end
-
-      it 'does not create user' do
-        expect { :post_email }.to_not change(User, :count)
-      end
-    end
   end
 end

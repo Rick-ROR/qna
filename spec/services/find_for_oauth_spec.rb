@@ -8,7 +8,7 @@ RSpec.describe Services::FindForOauth, type: :services do
 
   context 'user already has authorization' do
     before do
-      user.authorizations.create(provider: 'facebook', uid: '31414')
+      user.authorizations.create!(provider: 'facebook', uid: '31414')
     end
 
     it 'returns the user' do
