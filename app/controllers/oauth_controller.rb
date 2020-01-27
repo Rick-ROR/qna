@@ -1,4 +1,4 @@
-class QnaOauthController < Devise::OmniauthCallbacksController
+class OauthController < Devise::OmniauthCallbacksController
 
   before_action :create_auth, only: [:github, :vkontakte]
 

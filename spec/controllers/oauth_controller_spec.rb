@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe QnaOauthController, type: :controller do
+RSpec.describe OauthController, type: :controller do
 
   providers = Devise.omniauth_providers
 

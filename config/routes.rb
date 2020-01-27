@@ -1,10 +1,10 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   #
-  devise_for :users, controllers: {omniauth_callbacks: 'qna_oauth'}
+  devise_for :users, controllers: {omniauth_callbacks: 'oauth'}
   devise_scope :user do
-    get '/oauth_adding_email' => 'qna_oauth#adding_email'
-    post '/oauth_adding_email' => 'qna_oauth#set_email'
+    get '/oauth_adding_email' => 'oauth#adding_email'
+    post '/oauth_adding_email' => 'oauth#set_email'
   end
 
   concern :votable do
