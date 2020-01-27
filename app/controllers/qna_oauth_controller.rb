@@ -12,12 +12,14 @@ class QnaOauthController < Devise::OmniauthCallbacksController
   end
 
   def set_email
-    if params["oauth_email"] !~ Devise.email_regexp
+    email = params["oauth_email"]
+
+    if email !~ Devise.email_regexp
       redirect_to oauth_adding_email_path, alert: 'You entered the wrong email format!'
     else
-      auth_hash = session['devise.oauth_provider'].merge!('info' => { 'email' => params["oauth_email"] } )
+      auth_hash = session['devise.oauth_provider'].merge!('info' => { 'email' => email } )
       User.find_for_oauth(OmniAuth::AuthHash.new(auth_hash))
-      redirect_to root_path, notice: "Check #{params["oauth_email"]} and confirm your email address before continuing."
+      redirect_to root_path, notice: "Check #{email} and confirm your email address before continuing."
     end
   end
 
