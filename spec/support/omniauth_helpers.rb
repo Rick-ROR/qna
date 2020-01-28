@@ -1,8 +1,5 @@
 module OmniauthHelpers
-  def mock_auth_hash(auth)
-
-    provider = auth[:provider] || 'some_provider'
-    email = auth[:email] || nil
+  def mock_auth_hash(provider: , email: nil)
 
     auth_hash = {
       'provider' => provider,
