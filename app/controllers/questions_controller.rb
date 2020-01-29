@@ -11,6 +11,8 @@ class QuestionsController < ApplicationController
   expose :questions, ->{ Question.all.order(created_at: :desc) }
   expose :question, -> { params[:id] ? Question.with_attached_files.find(params[:id]) : Question.new }
 
+  authorize_resource
+
   def create
     @question = current_user.author_questions.new(question_params)
 
