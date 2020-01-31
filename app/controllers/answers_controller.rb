@@ -24,12 +24,12 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    authorize! :update, answer
+    authorize! :destroy, answer
     answer.destroy
   end
 
   def best
-    authorize! :update, answer.question
+    authorize! :best, answer
     answer.make_best
   end
 

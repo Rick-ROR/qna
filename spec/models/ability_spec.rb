@@ -21,13 +21,13 @@ describe Ability do
 
   describe 'for user' do
     let(:user) { create :user}
-    let(:other_user) { create :user}
-    let(:user_question) { create(:question, :with_file, author: user) }
-    let(:other_user_question) { create(:question, :with_file, author: other_user) }
-    let(:user_answer) { create(:answer, :with_file, author: user) }
-    let(:other_user_answer) { create(:answer, :with_file, author: other_user) }
-    let(:user_comment) { create(:comment, author: user, commentable: other_user_question) }
-    let(:other_user_comment) { create(:comment, author: other_user, commentable: other_user_question) }
+    let(:other_user) {create :user}
+    let(:user_question) { build(:question, :with_file, author: user) }
+    let(:other_user_question) { build(:question, :with_file, author: other_user) }
+    let(:user_answer) { build(:answer, :with_file, author: user) }
+    let(:other_user_answer) { build(:answer, :with_file, author: other_user) }
+    let(:user_comment) { build(:comment, author: user, commentable: other_user_question) }
+    let(:other_user_comment) { build(:comment, author: other_user, commentable: other_user_question) }
 
     it { should_not	be_able_to :manage, :all }
     it { should	be_able_to	:read, :all }
