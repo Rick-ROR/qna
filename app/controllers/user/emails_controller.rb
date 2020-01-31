@@ -1,4 +1,5 @@
 class User::EmailsController < ApplicationController
+  skip_authorization_check
 
   def new
   end

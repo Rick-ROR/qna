@@ -61,11 +61,11 @@ describe Ability do
 
     # VOTE
 
-    it { should be_able_to :vote, user_question }
-    it { should_not be_able_to :vote, other_user_question }
+    it { should be_able_to :vote, other_user_question }
+    it { should_not be_able_to :vote, user_question }
 
-    it { should be_able_to :vote, user_answer }
-    it { should_not be_able_to :vote, other_user_answer }
+    it { should be_able_to :vote, other_user_answer }
+    it { should_not be_able_to :vote, user_answer }
 
     # BEST
 

@@ -30,7 +30,9 @@ class Ability
     can :update, [Question, Answer, Comment], author_id: user.id
     can :destroy, [Question, Answer], author_id: user.id
     can :destroy, ActiveStorage::Attachment, record: { author_id: user.id }
-    can :vote, [Question, Answer], author_id: user.id
+    can :vote, [Question, Answer] do |resource|
+      !user.author_of?(resource)
+    end
     can :best, [Answer], question: { author_id: user.id }
     can :read, Reward
   end

@@ -25,16 +25,14 @@ class QuestionsController < ApplicationController
 
   def update
     @question = Question.find(params[:id])
-    may?(@question) ? @question.update(question_params) : no_rights(@question)
+    authorize! :update, @question
+    @question.update(question_params)
   end
 
   def destroy
-    if current_user.author_of?(question)
-      question.destroy
-      redirect_to questions_path, notice: 'Your question was successfully deleted.'
-    else
-      redirect_to question, alert: 'You have no rights to do this.'
-    end
+    authorize! :destroy, question
+    question.destroy
+    redirect_to questions_path, notice: 'Your question was successfully deleted.'
   end
 
   private

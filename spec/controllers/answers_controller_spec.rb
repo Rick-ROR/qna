@@ -59,8 +59,8 @@ RSpec.describe AnswersController, type: :controller do
         expect { del_answer }.to_not change(Answer, :count)
       end
 
-      it 'redirects to question show' do
-        expect(del_answer).to redirect_to question
+      it 'redirects to root' do
+        expect(del_answer).to redirect_to root_path
       end
     end
   end
@@ -102,12 +102,12 @@ RSpec.describe AnswersController, type: :controller do
         expect { answer.reload }.to_not change(answer, :body)
       end
 
-      it 'redirects to question' do
-        expect(response).to redirect_to question
+      it 'redirects to root' do
+        expect(response).to redirect_to root_path
       end
 
       it 'flashes message with error ' do
-        expect(flash[:alert]).to eq 'You have no rights to do this.'
+        expect(flash[:alert]).to eq 'You are not authorized to access this page.'
       end
     end
 
@@ -134,8 +134,8 @@ RSpec.describe AnswersController, type: :controller do
         expect { answer.reload }.to_not change(answer, :best)
       end
 
-      it 'redirects to question show' do
-        expect(response).to redirect_to question
+      it 'redirects to root' do
+        expect(response).to redirect_to root_path
       end
     end
 

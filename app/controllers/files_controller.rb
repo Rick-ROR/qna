@@ -6,16 +6,13 @@ class FilesController < ApplicationController
   expose(:resource) { file.record }
 
   def destroy
-    if current_user.author_of?(resource)
-      file.purge
-      if is_question?(resource)
-        @question = resource
-        render template: 'questions/update.js.erb', :object => @question
-      else
-        render template: 'answers/update.js.erb', :locals => {answer: resource}
-      end
+    authorize! :destroy, resource
+    file.purge
+    if is_question?(resource)
+      @question = resource
+      render template: 'questions/update.js.erb', :object => @question
     else
-      redirect_to is_question?(resource) ? resource : resource.question, alert: 'You have no rights to do this.'
+      render template: 'answers/update.js.erb', :locals => {answer: resource}
     end
   end
 end

@@ -27,13 +27,13 @@ RSpec.describe FilesController, type: :controller do
         expect { del_file }.to_not change(question.files, :count)
       end
 
-      it 'redirects to question' do
-        expect(del_file).to redirect_to question
+      it 'redirects to root' do
+        expect(del_file).to redirect_to root_path
       end
 
       it 'flashes message with error' do
         del_file
-        expect(flash[:alert]).to eq 'You have no rights to do this.'
+        expect(flash[:alert]).to eq 'You are not authorized to access this page.'
       end
     end
   end
