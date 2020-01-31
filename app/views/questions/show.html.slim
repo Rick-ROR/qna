@@ -3,7 +3,7 @@
 
 
   div[id="comments-question-#{question.id}" class="comments"]
-    - if current_user
+    - if can?(:create, Comment)
       = render 'comments/new', comment: question.comments.new
 
     ul
@@ -12,5 +12,5 @@
 ul.question_answers
   = render question.answers.with_attached_files
 
-- if current_user
+- if can?(:create, Answer)
   = render 'answers/new', answer: question.answers.new

@@ -3,7 +3,11 @@ class ApplicationController < ActionController::Base
   before_action :gon_user, unless: :devise_controller?
 
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_back fallback_location: root_path, alert: exception.message
+    respond_to do |format|
+      format.html { redirect_back fallback_location: root_path, alert: exception.message }
+      format.json { render json: { error: exception.message } }
+      format.js { head :forbidden }
+    end
   end
 
 

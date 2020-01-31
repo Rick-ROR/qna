@@ -99,12 +99,8 @@ RSpec.describe QuestionsController, type: :controller do
         expect { question.reload }.to not_change(question, :title).and not_change(question, :body)
       end
 
-      it 'redirects to root' do
-        expect(response).to redirect_to root_path
-      end
-
-      it 'flashes message with error' do
-        expect(flash[:alert]).to eq 'You are not authorized to access this page.'
+      it 'response 403-error' do
+        expect(response.status).to eq 403
       end
     end
   end
