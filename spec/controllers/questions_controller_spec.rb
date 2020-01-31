@@ -99,12 +99,8 @@ RSpec.describe QuestionsController, type: :controller do
         expect { question.reload }.to not_change(question, :title).and not_change(question, :body)
       end
 
-      it 'redirects to question' do
-        expect(response).to redirect_to question
-      end
-
-      it 'flashes message with error' do
-        expect(flash[:alert]).to eq 'You have no rights to do this.'
+      it 'response 403-error' do
+        expect(response.status).to eq 403
       end
     end
   end
@@ -131,8 +127,8 @@ RSpec.describe QuestionsController, type: :controller do
         expect { del_question }.to_not change(Question, :count)
       end
 
-      it 'redirects to show' do
-        expect( del_question ).to redirect_to question
+      it 'redirects to root' do
+        expect( del_question ).to redirect_to root_path
       end
     end
   end

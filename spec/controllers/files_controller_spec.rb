@@ -27,13 +27,9 @@ RSpec.describe FilesController, type: :controller do
         expect { del_file }.to_not change(question.files, :count)
       end
 
-      it 'redirects to question' do
-        expect(del_file).to redirect_to question
-      end
-
-      it 'flashes message with error' do
+      it 'response 403-error' do
         del_file
-        expect(flash[:alert]).to eq 'You have no rights to do this.'
+        expect(response.status).to eq 403
       end
     end
   end

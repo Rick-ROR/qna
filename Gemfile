@@ -38,6 +38,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem 'slim-rails'
 gem 'decent_exposure', '3.0.0'
 gem 'devise'
+gem 'cancancan'
 gem 'jquery-rails'
 gem 'bootstrap', '~> 4.3.1'
 gem 'octicons_helper'

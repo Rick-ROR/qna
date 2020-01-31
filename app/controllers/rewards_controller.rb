@@ -4,4 +4,6 @@ class RewardsController < ApplicationController
   expose :user
   expose :rewards, -> { user.rewards }
 
+  authorize_resource
+
 end

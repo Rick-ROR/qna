@@ -18,6 +18,7 @@ RSpec.describe Voted, type: :controller do
 
   controller MoviesController do
     include Voted
+    skip_authorization_check
   end
 
   before do

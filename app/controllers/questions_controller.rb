@@ -11,6 +11,8 @@ class QuestionsController < ApplicationController
   expose :questions, ->{ Question.all.order(created_at: :desc) }
   expose :question, -> { params[:id] ? Question.with_attached_files.find(params[:id]) : Question.new }
 
+  authorize_resource
+
   def create
     @question = current_user.author_questions.new(question_params)
 
@@ -23,16 +25,14 @@ class QuestionsController < ApplicationController
 
   def update
     @question = Question.find(params[:id])
-    may?(@question) ? @question.update(question_params) : no_rights(@question)
+    authorize! :update, @question
+    @question.update(question_params)
   end
 
   def destroy
-    if current_user.author_of?(question)
-      question.destroy
-      redirect_to questions_path, notice: 'Your question was successfully deleted.'
-    else
-      redirect_to question, alert: 'You have no rights to do this.'
-    end
+    authorize! :destroy, question
+    question.destroy
+    redirect_to questions_path, notice: 'Your question was successfully deleted.'
   end
 
   private

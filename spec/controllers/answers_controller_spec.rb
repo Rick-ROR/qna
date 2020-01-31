@@ -59,8 +59,9 @@ RSpec.describe AnswersController, type: :controller do
         expect { del_answer }.to_not change(Answer, :count)
       end
 
-      it 'redirects to question show' do
-        expect(del_answer).to redirect_to question
+      it 'response 403-error' do
+        del_answer
+        expect(response.status).to eq 403
       end
     end
   end
@@ -102,12 +103,8 @@ RSpec.describe AnswersController, type: :controller do
         expect { answer.reload }.to_not change(answer, :body)
       end
 
-      it 'redirects to question' do
-        expect(response).to redirect_to question
-      end
-
-      it 'flashes message with error ' do
-        expect(flash[:alert]).to eq 'You have no rights to do this.'
+      it 'response 403-error' do
+        expect(response.status).to eq 403
       end
     end
 
@@ -134,8 +131,8 @@ RSpec.describe AnswersController, type: :controller do
         expect { answer.reload }.to_not change(answer, :best)
       end
 
-      it 'redirects to question show' do
-        expect(response).to redirect_to question
+      it 'response 403-error' do
+        expect(response.status).to eq 403
       end
     end
 

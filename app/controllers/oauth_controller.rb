@@ -1,4 +1,5 @@
 class OauthController < Devise::OmniauthCallbacksController
+  skip_authorization_check
 
   def github
     create_auth

@@ -8,6 +8,8 @@ class AnswersController < ApplicationController
   expose :answer, -> { params[:id] ? Answer.with_attached_files.find(params[:id]) : Answer.new }
   expose :question
 
+  authorize_resource
+
   after_action :pub_answer, only: :create
 
   def create
@@ -17,16 +19,18 @@ class AnswersController < ApplicationController
   end
 
   def update
-    @question = answer.question
-    may?(answer) ? answer.update(answer_params) : no_rights(@question)
+    authorize! :update, answer
+    answer.update(answer_params)
   end
 
   def destroy
-    may?(answer) ? answer.destroy : no_rights(answer.question)
+    authorize! :destroy, answer
+    answer.destroy
   end
 
   def best
-    may?(answer.question) ? answer.make_best : no_rights(answer.question)
+    authorize! :best, answer
+    answer.make_best
   end
 
   private
