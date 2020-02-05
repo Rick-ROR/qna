@@ -9,6 +9,16 @@ Rails.application.routes.draw do
     post '/oauth_adding_email', to: 'emails#create'
   end
 
+  namespace :api do
+    namespace :v1 do
+      resources :profiles, only: [] do
+        get :me, on: :collection
+      end
+
+      # resources :questions, only: [:index]
+    end
+  end
+
   concern :votable do
     member do
       patch :vote

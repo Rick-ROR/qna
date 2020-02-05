@@ -40,6 +40,7 @@ RSpec.configure do |config|
   config.extend WithModel
   config.include OmniauthHelpers, type: :feature
   OmniAuth.config.test_mode = true
+  config.include ApiHelpers, type: :request
 
   RSpec::Matchers.define_negated_matcher :not_change, :change
 

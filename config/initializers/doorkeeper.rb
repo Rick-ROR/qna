@@ -72,12 +72,12 @@ Doorkeeper.configure do
 
   # Authorization Code expiration time (default: 10 minutes).
   #
-  if Rails.env.production?
-    authorization_code_expires_in 10.minutes
-    access_token_expires_in 2.hours
-  else
+  if Rails.env.development?
     authorization_code_expires_in 2.hours
     access_token_expires_in 24.hours
+  else
+    authorization_code_expires_in 10.minutes
+    access_token_expires_in 2.hours
   end
 
   # Access token expiration time (default: 2 hours).

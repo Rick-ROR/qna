@@ -50,7 +50,8 @@ gem 'skim'
 gem 'omniauth'
 gem 'omniauth-github'
 gem 'omniauth-vkontakte'
-gem 'doorkeeper'
+# gem 'doorkeeper', '5.2.3'
+gem 'doorkeeper', '5.3.0'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
