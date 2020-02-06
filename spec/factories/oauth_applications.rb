@@ -4,5 +4,6 @@ FactoryBot.define do
     redirect_uri { 'urn:ietf:wg:oauth:2.0:oob' }
     uid { '12345678' }
     secret { '876543212' }
+    # scopes { "" }
   end
 end
