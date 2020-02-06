@@ -4,7 +4,7 @@ describe 'Profiles API', type: :request do
   let(:headers) {  { "CONTENT_TYPE" => "application/json",
                      "ACCEPT" => 'application/json' } }
 
-  describe 'GET /api/v1/profites/me' do
+  describe 'GET /api/v1/profiles/me' do
     context 'unauthorized' do
 
       it 'returns 401 status if there is no access_token' do
