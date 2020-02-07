@@ -27,7 +27,7 @@ describe 'Questions API', type: :request do
       let(:access_token) { create(:access_token) }
       let!(:questions) { create_list(:question, 2) }
       let(:question) { questions.first }
-      let(:question_response) { json.first }
+      let(:question_response) { json['questions'].first }
       let!(:answers) { create_list(:answer, 3, question: question) }
 
       before { get '/api/v1/questions', params: { access_token: access_token.token }, headers: headers }
@@ -37,8 +37,7 @@ describe 'Questions API', type: :request do
       end
 
       it 'returns list of questions' do
-        # byebug
-        expect(json.size).to eq 2
+        expect(json['questions'].size).to eq 2
       end
 
       it 'returns all public fields' do
@@ -47,6 +46,14 @@ describe 'Questions API', type: :request do
         attrs.each do |attr|
           expect(question_response[attr]).to eq question.send(attr).as_json
         end
+      end
+
+      it 'contains user object' do
+        expect(question_response['author']['id']).to eq question.author.id
+      end
+
+      it 'contains short title' do
+        expect(question_response['short_title']).to eq question.title.truncate(7)
       end
 
       describe 'answers' do
@@ -59,7 +66,6 @@ describe 'Questions API', type: :request do
 
         it 'returns all public fields' do
           attrs = %w[id body author_id created_at updated_at]
-          # byebug
 
           attrs.each do |attr|
             expect(answer_response[attr]).to eq answer.send(attr).as_json
