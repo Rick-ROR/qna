@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 describe 'Questions API DELETE', type: :request do
-  let(:headers) {  { "CONTENT_TYPE" => "application/json",
-                     "ACCEPT" => 'application/json' } }
 
   describe 'DELETE /api/v1/questions/:id' do
     let(:headers) { { "ACCEPT" => 'application/json' } }
@@ -20,9 +18,8 @@ describe 'Questions API DELETE', type: :request do
         let(:params) { { access_token: access_token.token } }
         let(:delete_question) { delete api_path, params: params, headers: headers }
 
-        it 'returns 200 status' do
-          delete_question
-          expect(response).to be_successful
+        it_behaves_like 'API Successfulable' do
+          before { delete_question }
         end
 
         it 'delete question from DB' do
@@ -45,10 +42,7 @@ describe 'Questions API DELETE', type: :request do
           expect { question.reload }.to_not change(Question, :count)
         end
 
-        it 'returns 422 status with errors' do
-          expect(response.status).to eq 422
-          expect(json.keys).to eq %w[ errors ]
-        end
+        it_behaves_like 'API Unprocessable'
       end
     end
 

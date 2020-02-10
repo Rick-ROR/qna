@@ -18,16 +18,11 @@ describe 'Answers API SHOW', type: :request do
 
       before { get api_path, params: { access_token: access_token.token }, headers: headers }
 
-      it 'returns 200 status' do
-        expect(response).to be_successful
-      end
+      it_behaves_like 'API Successfulable'
 
-      it 'returns all public fields' do
-        attrs = %w[id body best author_id created_at updated_at]
-
-        attrs.each do |attr|
-          expect(answer_response[attr]).to eq answer.send(attr).as_json
-        end
+      it_behaves_like 'API return Pub Fields' do
+        let(:fields) { %w[id body best author_id created_at updated_at] }
+        let(:resource) { answer }
       end
 
       describe 'links' do
@@ -38,12 +33,9 @@ describe 'Answers API SHOW', type: :request do
           expect(answer_response['links'].size).to eq 3
         end
 
-        it 'returns all public fields' do
-          attrs = %w[name url]
-
-          attrs.each do |attr|
-            expect(link_response[attr]).to eq link.send(attr).as_json
-          end
+        it_behaves_like 'API return Pub Fields' do
+          let(:fields) { %w[name url] }
+          let(:resource) { link }
         end
       end
 
@@ -68,12 +60,9 @@ describe 'Answers API SHOW', type: :request do
           expect(answer_response['comments'].size).to eq 3
         end
 
-        it 'returns all public fields' do
-          attrs = %w[id body created_at updated_at]
-
-          attrs.each do |attr|
-            expect(comment_response[attr]).to eq comment.send(attr).as_json
-          end
+        it_behaves_like 'API return Pub Fields' do
+          let(:fields) { %w[id body created_at updated_at] }
+          let(:resource) { comment }
         end
       end
 

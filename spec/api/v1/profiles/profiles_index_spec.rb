@@ -33,12 +33,9 @@ describe 'Profiles API INDEX', type: :request do
         expect(json['users']).to_not be_include(me)
       end
 
-      it 'returns all public fields' do
-        attrs = %w[id email admin created_at updated_at]
-
-        attrs.each do |attr|
-          expect(user_response[attr]).to eq users.last.send(attr).as_json
-        end
+      it_behaves_like 'API return Pub Fields' do
+        let(:fields) { %w[id email admin created_at updated_at] }
+        let(:resource) { users.last }
       end
 
       it 'does not return private fields' do

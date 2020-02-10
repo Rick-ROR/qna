@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 describe 'Questions API CREATE', type: :request do
-  let(:headers) {  { "CONTENT_TYPE" => "application/json",
-                     "ACCEPT" => 'application/json' } }
 
   describe 'POST /api/v1/questions' do
     let(:headers) { { "ACCEPT" => 'application/json' } }
@@ -28,9 +26,8 @@ describe 'Questions API CREATE', type: :request do
         let(:post_question) { post api_path, params: valid_params, headers: headers }
         let(:question_response) { json['question'] }
 
-        it 'returns 200 status' do
-          post_question
-          expect(response).to be_successful
+        it_behaves_like 'API Successfulable' do
+          before { post_question }
         end
 
         it 'saves a new question to the user token' do
@@ -63,11 +60,8 @@ describe 'Questions API CREATE', type: :request do
           expect { post_question }.to_not change(Question, :count)
         end
 
-        it 'returns 422 status with errors' do
-          post_question
-
-          expect(response.status).to eq 422
-          expect(json.keys).to eq %w[ errors ]
+        it_behaves_like 'API Unprocessable' do
+          before { post_question }
         end
       end
     end

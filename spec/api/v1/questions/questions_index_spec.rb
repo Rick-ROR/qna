@@ -21,20 +21,15 @@ describe 'Questions API INDEX', type: :request do
 
       before { get api_path, params: { access_token: access_token.token }, headers: headers }
 
-      it 'returns 200 status' do
-        expect(response).to be_successful
-      end
+      it_behaves_like 'API Successfulable'
 
       it 'returns list of questions' do
         expect(json['questions'].size).to eq 2
       end
 
-      it 'returns all public fields' do
-        attrs = %w[id title body created_at updated_at]
-
-        attrs.each do |attr|
-          expect(question_response[attr]).to eq question.send(attr).as_json
-        end
+      it_behaves_like 'API return Pub Fields' do
+        let(:fields) { %w[id title body author_id created_at updated_at] }
+        let(:resource) { question }
       end
 
       it 'contains short title' do

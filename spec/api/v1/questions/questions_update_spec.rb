@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 describe 'Questions API UPDATE', type: :request do
-  let(:headers) {  { "CONTENT_TYPE" => "application/json",
-                     "ACCEPT" => 'application/json' } }
 
   describe 'PATCH /api/v1/questions/:id' do
     let(:headers) { { "ACCEPT" => 'application/json' } }
@@ -30,11 +28,9 @@ describe 'Questions API UPDATE', type: :request do
         before { patch api_path, params: valid_params, headers: headers }
         let(:question_response) { json['question'] }
 
-        it 'returns 200 status' do
-          expect(response).to be_successful
-        end
+        it_behaves_like 'API Successfulable'
 
-        it 'changes question attrs' do
+        it 'the question has been updated' do
           question.reload
 
           new_attrs.each do |attr, value|
@@ -42,13 +38,11 @@ describe 'Questions API UPDATE', type: :request do
           end
         end
 
-        it 'returns an updated question' do
-          question.reload
-
-          question.attributes.each do |attr, value|
-            expect(question_response[attr.to_s]).to eq value.as_json
-          end
+        it_behaves_like 'API return Pub Fields' do
+          let(:fields) { %w[id title body author_id created_at updated_at] }
+          let(:resource) { question.reload }
         end
+
       end
 
       context 'with invalid attributes' do
@@ -64,11 +58,7 @@ describe 'Questions API UPDATE', type: :request do
           expect { question.reload }.to not_change(question, :title).and not_change(question, :body)
         end
 
-
-        it 'returns 422 status with errors' do
-          expect(response.status).to eq 422
-          expect(json.keys).to eq %w[ errors ]
-        end
+        it_behaves_like 'API Unprocessable'
       end
 
       context 'with valid attributes by non-author question' do
@@ -86,11 +76,7 @@ describe 'Questions API UPDATE', type: :request do
           expect { question.reload }.to not_change(question, :title).and not_change(question, :body)
         end
 
-
-        it 'returns 422 status with errors' do
-          expect(response.status).to eq 422
-          expect(json.keys).to eq %w[ errors ]
-        end
+        it_behaves_like 'API Unprocessable'
       end
     end
   end

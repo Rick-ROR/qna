@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 describe 'Answers API UPDATE', type: :request do
-  let(:headers) {  { "CONTENT_TYPE" => "application/json",
-                     "ACCEPT" => 'application/json' } }
 
   describe 'PATCH /api/v1/answers/:id' do
     let(:headers) { { "ACCEPT" => 'application/json' } }
@@ -30,11 +28,9 @@ describe 'Answers API UPDATE', type: :request do
         before { patch api_path, params: valid_params, headers: headers }
         let(:answer_response) { json['answer'] }
 
-        it 'returns 200 status' do
-          expect(response).to be_successful
-        end
+        it_behaves_like 'API Successfulable'
 
-        it 'changes answer attrs' do
+        it 'the answer has been updated' do
           answer.reload
 
           new_attrs.each do |attr, value|
@@ -42,12 +38,9 @@ describe 'Answers API UPDATE', type: :request do
           end
         end
 
-        it 'returns an updated answer' do
-          answer.reload
-
-          answer.attributes.each do |attr, value|
-            expect(answer_response[attr.to_s]).to eq value.as_json
-          end
+        it_behaves_like 'API return Pub Fields' do
+          let(:fields) { %w[id body best author_id created_at updated_at] }
+          let(:resource) { answer.reload }
         end
       end
 
@@ -64,10 +57,7 @@ describe 'Answers API UPDATE', type: :request do
           expect { answer.reload }.to not_change(answer, :body)
         end
 
-        it 'returns 422 status with errors' do
-          expect(response.status).to eq 422
-          expect(json.keys).to eq %w[ errors ]
-        end
+        it_behaves_like 'API Unprocessable'
       end
 
       context 'with valid attributes by non-author answer' do
@@ -85,10 +75,7 @@ describe 'Answers API UPDATE', type: :request do
           expect { answer.reload }.to not_change(answer, :body)
         end
 
-        it 'returns 422 status with errors' do
-          expect(response.status).to eq 422
-          expect(json.keys).to eq %w[ errors ]
-        end
+        it_behaves_like 'API Unprocessable'
       end
     end
 

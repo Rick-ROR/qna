@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 describe 'Answers API CREATE', type: :request do
-  let(:headers) {  { "CONTENT_TYPE" => "application/json",
-                     "ACCEPT" => 'application/json' } }
 
   describe 'POST /api/v1/questions/:id/answers' do
     let(:headers) { { "ACCEPT" => 'application/json' } }
@@ -30,9 +28,8 @@ describe 'Answers API CREATE', type: :request do
         let(:post_answer) { post api_path, params: valid_params, headers: headers }
         let(:answer_response) { json['answer'] }
 
-        it 'returns 200 status' do
-          post_answer
-          expect(response).to be_successful
+        it_behaves_like 'API Successfulable' do
+          before { post_answer }
         end
 
         it 'saves a new answer to the user token' do
@@ -64,11 +61,8 @@ describe 'Answers API CREATE', type: :request do
           expect { post_answer }.to_not change(Answer, :count)
         end
 
-        it 'returns 422 status with errors' do
-          post_answer
-
-          expect(response.status).to eq 422
-          expect(json.keys).to eq %w[ errors ]
+        it_behaves_like 'API Unprocessable' do
+          before { post_answer }
         end
       end
     end
