@@ -18,16 +18,13 @@ describe 'Profiles API ME', type: :request do
 
       before { get api_path, params: { access_token: access_token.token }, headers: headers }
 
-      it 'returns 200 status' do
-        expect(response).to be_successful
-      end
+      it_behaves_like 'API Successfulable'
 
-      it 'returns all public fields' do
-        attrs = %w[id email admin created_at updated_at]
 
-        attrs.each do |attr|
-          expect(json['user'][attr]).to eq me.send(attr).as_json
-        end
+      it_behaves_like 'API return Pub Fields' do
+        let(:fields) { %w[id email admin created_at updated_at] }
+        let(:resource) { me }
+        let(:user_response) { json['user'] }
       end
 
       it 'does not return private fields' do

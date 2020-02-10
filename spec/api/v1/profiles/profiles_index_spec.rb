@@ -21,9 +21,7 @@ describe 'Profiles API INDEX', type: :request do
 
       before { get api_path, params: { access_token: access_token.token }, headers: headers }
 
-      it 'returns 200 status' do
-        expect(response).to be_successful
-      end
+      it_behaves_like 'API Successfulable'
 
       it 'returns list of users' do
         expect(json['users'].size).to eq 3

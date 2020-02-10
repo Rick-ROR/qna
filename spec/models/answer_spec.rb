@@ -10,20 +10,10 @@ RSpec.describe Answer, type: :model do
 
   it{ should accept_nested_attributes_for :links }
 
-  it "has the module Authorable" do
-    expect(described_class.include?(Authorable)).to eq true
-  end
-
-  it "has the module Linkable" do
-    expect(described_class.include?(Linkable)).to eq true
-  end
-
-  it "has the module Votable" do
-    expect(described_class.include?(Votable)).to eq true
-  end
-
-  it "has the module Votable" do
-    expect(described_class.include?(Commentable)).to eq true
+  %w[Authorable Linkable Votable Commentable].each do |name|
+    it "has the module #{name}" do
+      expect(described_class.include?(name.constantize)).to eq true
+    end
   end
 
   it 'have many attached files' do
