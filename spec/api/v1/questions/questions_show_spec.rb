@@ -5,7 +5,7 @@ describe 'Questions API SHOW', type: :request do
                      "ACCEPT" => 'application/json' } }
 
   describe 'GET /api/v1/questions/:id' do
-    let(:question) { create(:question, :full_pack, count_relations: 3) }
+    let(:question) { create(:question, :full_pack, count_relations: 2) }
     let(:api_path) {  "/api/v1/questions/#{question.id}" }
     let(:access_token) { create(:access_token) }
 
@@ -15,7 +15,7 @@ describe 'Questions API SHOW', type: :request do
 
     context 'authorized' do
       let(:question_response) { json['question'] }
-      let!(:answers) { create_list(:answer, 3, question: question) }
+      let!(:answers) { create_list(:answer, 2, question: question) }
 
       before { get api_path, params: { access_token: access_token.token }, headers: headers }
 
@@ -31,7 +31,7 @@ describe 'Questions API SHOW', type: :request do
         let(:link_response) { question_response['links'].last }
 
         it 'returns list of links' do
-          expect(question_response['links'].size).to eq 3
+          expect(question_response['links'].size).to eq 2
         end
 
         it_behaves_like 'API return Pub Fields' do
@@ -58,7 +58,7 @@ describe 'Questions API SHOW', type: :request do
         let(:comment_response) { question_response['comments'].last }
 
         it 'returns list of comments' do
-          expect(question_response['comments'].size).to eq 3
+          expect(question_response['comments'].size).to eq 2
         end
 
         it_behaves_like 'API return Pub Fields' do
@@ -72,7 +72,7 @@ describe 'Questions API SHOW', type: :request do
         let(:answer_response) { question_response['answers'].last }
 
         it 'returns list of answers' do
-          expect(question_response['answers'].size).to eq 3
+          expect(question_response['answers'].size).to eq 2
         end
 
         it_behaves_like 'API return Pub Fields' do

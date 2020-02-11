@@ -17,7 +17,6 @@ describe 'Questions API INDEX', type: :request do
       let!(:questions) { create_list(:question, 2) }
       let(:question) { questions.first }
       let(:question_response) { json['questions'].last }
-      let!(:answers) { create_list(:answer, 3, question: question) }
 
       before { get api_path, params: { access_token: access_token.token }, headers: headers }
 

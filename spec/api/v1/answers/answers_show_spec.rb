@@ -5,7 +5,7 @@ describe 'Answers API SHOW', type: :request do
                      "ACCEPT" => 'application/json' } }
 
   describe 'GET /api/v1/answers/:id' do
-    let(:answer) { create(:answer, :full_pack, count_relations: 3) }
+    let(:answer) { create(:answer, :full_pack, count_relations: 2) }
     let(:api_path) { "/api/v1/answers/#{answer.id}" }
     let(:access_token) { create(:access_token) }
 
@@ -30,7 +30,7 @@ describe 'Answers API SHOW', type: :request do
         let(:link_response) { answer_response['links'].last }
 
         it 'returns list of links' do
-          expect(answer_response['links'].size).to eq 3
+          expect(answer_response['links'].size).to eq 2
         end
 
         it_behaves_like 'API return Pub Fields' do
@@ -57,7 +57,7 @@ describe 'Answers API SHOW', type: :request do
         let(:comment_response) { answer_response['comments'].last }
 
         it 'returns list of comments' do
-          expect(answer_response['comments'].size).to eq 3
+          expect(answer_response['comments'].size).to eq 2
         end
 
         it_behaves_like 'API return Pub Fields' do

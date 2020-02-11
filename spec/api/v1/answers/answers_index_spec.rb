@@ -15,6 +15,7 @@ describe 'Answers API INDEX', type: :request do
 
     context 'authorized' do
       let(:access_token) { create(:access_token) }
+      let!(:other_answer) { create(:answer) }
       let!(:answers) { create_list(:answer, 2, question: question) }
       let(:answer) { answers.first }
       let(:answer_response) { json['answers'].last }
@@ -23,7 +24,7 @@ describe 'Answers API INDEX', type: :request do
 
       it_behaves_like 'API Successfulable'
 
-      it 'returns list of answers' do
+      it 'returns list of answers to question' do
         expect(json['answers'].size).to eq 2
       end
 

@@ -28,7 +28,7 @@ describe 'Profiles API INDEX', type: :request do
       end
 
       it 'returns list doesn\'t include me' do
-        expect(json['users']).to_not be_include(me)
+        expect(json['users']).to_not be_include(me.as_json.transform_values {|attr| attr.as_json })
       end
 
       it_behaves_like 'API return Pub Fields' do

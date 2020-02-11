@@ -1,9 +1,9 @@
 class Api::V1::AnswersController < Api::V1::BaseController
   authorize_resource class: Answer
 
-  expose :answers, ->{ Answer.all }
-  expose :answer, -> { params[:id] ? Answer.with_attached_files.find(params[:id]) : Answer.new }
   expose :question
+  expose :answers, ->{ question.answers }
+  expose :answer, -> { params[:id] ? Answer.with_attached_files.find(params[:id]) : Answer.new }
 
   def index
     render json: answers, each_serializer: AnswersSerializer
