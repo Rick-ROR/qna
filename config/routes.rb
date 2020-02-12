@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  use_doorkeeper
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   #
   devise_for :users, controllers: {omniauth_callbacks: 'oauth'}
@@ -6,6 +7,18 @@ Rails.application.routes.draw do
   namespace :user do
     get '/oauth_adding_email', to: 'emails#new'
     post '/oauth_adding_email', to: 'emails#create'
+  end
+
+  namespace :api do
+    namespace :v1 do
+      resources :profiles, only: [:index] do
+        get :me, on: :collection
+      end
+
+      resources :questions, only: %i[index show create update destroy]do
+        resources :answers, only:%i[index show create update destroy], shallow: true
+      end
+    end
   end
 
   concern :votable do
