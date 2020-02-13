@@ -1,3 +1,5 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
   use_doorkeeper
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
@@ -48,4 +50,8 @@ Rails.application.routes.draw do
   root to: 'questions#index'
 
   mount ActionCable.server => '/cable'
+
+  authenticate :user, lambda {|user| user.admin? } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
 end
