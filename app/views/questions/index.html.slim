@@ -1,5 +1,6 @@
-- if can?(:create, Question)
-  p= link_to 'Ask question', new_question_path
+h4
+  - if can?(:create, Question)
+    p= link_to 'Ask question', new_question_path
 
-ul.questions
-  = render partial: 'question_simple', collection: questions, :as => :question
+  ul.questions
+    = render partial: 'question_simple', collection: questions, :as => :question

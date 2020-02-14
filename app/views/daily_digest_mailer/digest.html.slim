@@ -1,2 +1,10 @@
-h1 DailyDigest#digest
-p = @greeting + ", find me in app/views/daily_digest_mailer/digest.html.slim"
+h3 Hello, #{@user.email}
+
+h4
+  - if @questions.any?
+    'This is a digest of questions created in the last 24 hours:
+    -  @questions.each do |question|
+      li
+        ul= link_to question.title, question
+  - else
+    'In the last day there were no new questions.
