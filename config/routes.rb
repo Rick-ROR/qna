@@ -47,6 +47,10 @@ Rails.application.routes.draw do
     resources :rewards, shallow: true, only: %i[index show]
   end
 
+  resources :subscriptions, only: %i[] do
+    patch :subscribe, on: :collection
+  end
+
   root to: 'questions#index'
 
   mount ActionCable.server => '/cable'
