@@ -38,6 +38,21 @@ feature 'User can subscribe on question', %q{
       end
     end
 
+    scenario 'Author must be subscribed after create question' do
+      visit questions_path
+      click_on 'Ask question'
+
+      fill_in 'Title', with: 'Maribou State - The Clown [feat. Pedestrian]'
+      fill_in 'Body', with: 'loved'
+      click_on 'Ask'
+
+      within('.question_box') do
+        expect(page).to have_content 'Maribou State - The Clown [feat. Pedestrian]'
+        expect(page).to have_content 'loved'
+        expect(page.find("input#subscribe")).to be_checked
+      end
+    end
+
   end
 
   describe "Unauthenticated user" do
