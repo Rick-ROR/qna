@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Services::DailyDigest, type: :services do
-  let(:users) {create_list(:user, 3)}
-  let(:questions) {create_list(:question, 3, author: users.first)}
+  let(:questions) {create_list(:question, 3)}
+  let!(:users) { questions.map{ |q| q.author } }
 
   it 'sends daily digest to all users' do
     questions_slice = questions.collect{ |question| question.slice(:id, :title) }

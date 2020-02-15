@@ -32,6 +32,6 @@ class User < ApplicationRecord
   end
 
   def get_sub_on_question(question)
-    subscriptions.where(question_id: question).first
+    subscriptions.find_by(question_id: question)
   end
 end

@@ -11,7 +11,7 @@ class SubscriptionsController < ApplicationController
     if subscription
       subscription.destroy
     else
-      question.subscriptions.create(user: current_user)
+      question.subscriptions.create!(user: current_user)
     end
 
     head :no_content

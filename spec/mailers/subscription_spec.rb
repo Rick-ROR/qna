@@ -2,8 +2,8 @@ require "rails_helper"
 
 RSpec.describe SubscriptionMailer, type: :mailer do
   describe "notification" do
-    let(:answer) { create(:answer) }
-    let(:subscriber) { create(:user) }
+    let(:answer) { build(:answer) }
+    let(:subscriber) { build(:user) }
     let(:mail) { SubscriptionMailer.notification(subscriber, answer) }
 
     it "renders the headers" do

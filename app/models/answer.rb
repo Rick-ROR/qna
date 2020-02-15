@@ -14,7 +14,7 @@ class Answer < ApplicationRecord
   default_scope { order(best:  :desc, created_at: :desc) }
   scope :get_best, -> { where(best: true) }
 
-  after_create :send_notice
+  after_create_commit :send_notice
 
   def make_best
     transaction do
