@@ -32,5 +32,6 @@ class Ability
     end
     can :best, [Answer], question: { author_id: user.id }
     can :read, Reward
+    can :subscribe, Subscription
   end
 end

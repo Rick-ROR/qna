@@ -30,4 +30,8 @@ class User < ApplicationRecord
     valid?
     errors[:email].blank?
   end
+
+  def get_sub_on_question(question)
+    subscriptions.where(question_id: question).first
+  end
 end

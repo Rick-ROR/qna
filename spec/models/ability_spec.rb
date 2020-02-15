@@ -77,6 +77,10 @@ describe Ability do
 
     it { should be_able_to :read, Reward }
 
+    # SUBSCRIBE
+
+    it { should be_able_to :subscribe, Subscription }
+
   end
 end
 

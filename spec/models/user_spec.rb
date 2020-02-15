@@ -56,4 +56,19 @@ RSpec.describe User, type: :model do
 
   end
 
+  describe '#get_sub_on_question' do
+    it 'returns subscription if exists' do
+      subscription = create(:subscription)
+      user = subscription.user
+      expect(user.get_sub_on_question(subscription.question)).to eq subscription
+    end
+
+    it 'returns nil if not exists' do
+      question = create(:question)
+      user = create(:user)
+      expect(user.get_sub_on_question(question)).to be nil
+    end
+
+  end
+
 end

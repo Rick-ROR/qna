@@ -1,12 +1,12 @@
 class SubscriptionsController < ApplicationController
-  skip_authorization_check
+
+  before_action :authenticate_user!
 
   expose :question, -> { Question.find(params[:question_id]) }
-  expose :subscription, -> { current_user&.subscriptions.where(question_id: params[:question_id]).first }
+  expose :subscription, -> { current_user&.get_sub_on_question(question) }
 
   def subscribe
-    # byebug
-    return unless current_user
+    authorize! :subscribe, Subscription
 
     if subscription
       subscription.destroy

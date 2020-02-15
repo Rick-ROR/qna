@@ -3,12 +3,13 @@ p= question.body
 
 = render 'shared/votes', resource: question
 
-h6
-  = "Subscription on question: "
-  span = check_box_tag 'subscribe', nil, false,
-          data: {remote: true, url: url_for(action: :subscribe,
-                  controller: 'subscriptions', question_id: question.id),
-                  method: :patch}
+- if can?(:subscribe, Subscription)
+  h6
+    = "Subscription on question: "
+    span = check_box_tag 'subscribe', nil, current_user&.get_sub_on_question(question).present?,
+            data: {remote: true, url: url_for(action: :subscribe,
+                    controller: 'subscriptions', question_id: question.id),
+                    method: :patch}
 
 - if can?(:update, question)
   ul.question_actions *{:class => "list-inline"}
