@@ -14,6 +14,7 @@ class Answer < ApplicationRecord
   default_scope { order(best:  :desc, created_at: :desc) }
   scope :get_best, -> { where(best: true) }
 
+  after_create :send_notice
 
   def make_best
     transaction do
@@ -21,6 +22,12 @@ class Answer < ApplicationRecord
       update!(best: true)
       update!(reward: question.reward) if question.reward
     end
+  end
+
+  private
+
+  def send_notice
+    NotifyNewAnswerJob.perform_later(self)
   end
 
 end

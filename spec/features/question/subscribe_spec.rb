@@ -16,10 +16,9 @@ feature 'User can subscribe on question', %q{
 
     scenario 'User subscribe on question', js: true do
       within('.question_box') do
-        expect(page).to have_checked_field "subscribe"
-
-        page.check("subscribe")
-        find('subscribe').should be_checked
+        expect(page).to have_field("subscribe")
+        check("subscribe")
+        expect(page.find("input#subscribe")).to be_checked
       end
     end
 
