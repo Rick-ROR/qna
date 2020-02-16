@@ -5,5 +5,5 @@ h4
     'This is a digest of questions created in the last 24 hours:
     -  @questions.each do |question|
       li
-        ul= link_to question['title'], question_url(question['id'])
+        ul= link_to question.title, question_url(question)
 
