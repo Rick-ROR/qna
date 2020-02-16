@@ -17,7 +17,7 @@ Rails.application.routes.draw do
         get :me, on: :collection
       end
 
-      resources :questions, only: %i[index show create update destroy]do
+      resources :questions, only: %i[index show create update destroy] do
         resources :answers, only:%i[index show create update destroy], shallow: true
       end
     end
@@ -47,9 +47,8 @@ Rails.application.routes.draw do
     resources :rewards, shallow: true, only: %i[index show]
   end
 
-  resources :subscriptions, only: %i[] do
-    patch :subscribe, on: :collection
-  end
+  resources :subscriptions, only: %i[create]
+  delete '/subscriptions', to: 'subscriptions#destroy'
 
   root to: 'questions#index'
 
