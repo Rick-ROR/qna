@@ -14,8 +14,8 @@ $(document).on 'turbolinks:load', ->
 
     e.preventDefault()
 
-    window.qnaToken = document.querySelector('[name="csrf-token"]').getAttribute('content')
-    window.qnaQuestionId = $( ".question_box" ).data('questionId')
+    window.qnaQuestionId = $(".question_box").data('questionId')
+    window.qnaToken = $('[name="csrf-token"]').attr('content')
     window.qnaSubscribe = this
 
     if window.qnaSubscribe.checked
@@ -27,8 +27,7 @@ $(document).on 'turbolinks:load', ->
           'X-CSRF-Token': window.qnaToken
         }
         success: ->
-          $(window.qnaSubscribe).attr( "checked", "checked" )
-          $(window.qnaSubscribe).prop( "checked", true )
+          $(window.qnaSubscribe).attr( "checked", "checked" ).prop( "checked", true )
           return
     else
       $.ajax
@@ -39,8 +38,7 @@ $(document).on 'turbolinks:load', ->
           'X-CSRF-Token': window.qnaToken
         }
         success: ->
-          $(window.qnaSubscribe).attr( "checked", null )
-          $(window.qnaSubscribe).prop( "checked", false )
+          $(window.qnaSubscribe).attr( "checked", null ).prop( "checked", false )
           return
 
     return
