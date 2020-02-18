@@ -13,6 +13,7 @@ class User < ApplicationRecord
   has_many :author_votes, foreign_key: 'author_id', class_name: 'Vote'
   has_many :rewards, through: :author_answers
   has_many :authorizations, dependent: :destroy
+  has_many :subscriptions, dependent: :destroy
 
   validates :email, uniqueness: { case_sensitive: false },
             format: { with: URI::MailTo::EMAIL_REGEXP }
@@ -28,5 +29,9 @@ class User < ApplicationRecord
   def email_valid?
     valid?
     errors[:email].blank?
+  end
+
+  def get_sub_on_question(question)
+    subscriptions.find_by(question_id: question)
   end
 end

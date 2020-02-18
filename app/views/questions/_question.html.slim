@@ -3,6 +3,11 @@ p= question.body
 
 = render 'shared/votes', resource: question
 
+- if can?(:create, Subscription)
+  h6
+    = "Subscription on question: "
+    span = check_box_tag 'subscribe', nil, current_user&.get_sub_on_question(question).present?, class: 'subscribe'
+
 - if can?(:update, question)
   ul.question_actions *{:class => "list-inline"}
     li.list-inline-item= link_to 'Edit', '#', class: 'edit-question-link', data: { question_id: question.id }

@@ -4,6 +4,7 @@ RSpec.describe User, type: :model do
   it { should have_many(:author_questions) }
   it { should have_many(:author_answers) }
   it { should have_many(:authorizations).dependent(:destroy) }
+  it { should have_many(:subscriptions).dependent(:destroy) }
 
   it { should validate_presence_of :password }
   it { should validate_presence_of :email }
@@ -19,14 +20,14 @@ RSpec.describe User, type: :model do
 
   describe '#author_of?' do
     let(:author) { create(:user) }
+    let(:question) { create(:question) }
+    let(:question_author) { create(:question, author: author) }
 
     it 'returns true if the user is the author of the question' do
-      question = create(:question, author: author)
-      expect(author).to be_an_author_of(question)
+      expect(author).to be_an_author_of(question_author)
     end
 
     it 'returns false if the user is not the author of the question' do
-      question = create(:question)
       expect(author).not_to be_an_author_of(question)
     end
   end
@@ -43,14 +44,31 @@ RSpec.describe User, type: :model do
   end
 
   describe '#email_valid?' do
+    let(:user) { build(:user) }
+    let(:user_invalid) { build(:user, email: '@kkk@example.edu') }
+
     it 'returns true if email is valid' do
-      user = build(:user)
       expect(user.email_valid?).to be true
     end
 
     it 'returns false if email is invalid' do
-      user = build(:user, email: '@kkk@example.edu')
-      expect(user.email_valid?).to be false
+      expect(user_invalid.email_valid?).to be false
+    end
+
+  end
+
+  describe '#get_sub_on_question' do
+    let!(:subscription) { create(:subscription) }
+    let!(:subscriber) { subscription.user }
+    let!(:question) { create(:question) }
+    let!(:user) { create(:user) }
+
+    it 'returns subscription if exists' do
+      expect(subscriber.get_sub_on_question(subscription.question)).to eq subscription
+    end
+
+    it 'returns nil if not exists' do
+      expect(user.get_sub_on_question(question)).to be nil
     end
 
   end

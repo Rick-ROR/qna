@@ -1,3 +1,5 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
   use_doorkeeper
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
@@ -15,7 +17,7 @@ Rails.application.routes.draw do
         get :me, on: :collection
       end
 
-      resources :questions, only: %i[index show create update destroy]do
+      resources :questions, only: %i[index show create update destroy] do
         resources :answers, only:%i[index show create update destroy], shallow: true
       end
     end
@@ -45,7 +47,14 @@ Rails.application.routes.draw do
     resources :rewards, shallow: true, only: %i[index show]
   end
 
+  resources :subscriptions, only: %i[create]
+  delete '/subscriptions', to: 'subscriptions#destroy'
+
   root to: 'questions#index'
 
   mount ActionCable.server => '/cable'
+
+  authenticate :user, lambda {|user| user.admin? } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
 end
