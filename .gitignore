@@ -31,3 +31,6 @@
 /.env
 
 .idea
+
+/config/*.sphinx.conf
+/db/sphinx
