@@ -1,4 +1,5 @@
 nav.navbar *{:class => "navbar-light border-top border-bottom"}
   = link_to 'Questions', root_path, class: "navbar-brand"
 
+  = render 'shared/search_form'
   = render 'shared/user_nav'

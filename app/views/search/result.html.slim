@@ -1,0 +1,7 @@
+h5
+  = "Results found #{@results.count}"
+
+  p
+    ul *{:class => "mb-3"}
+      - @results.each do |result|
+        = render 'questions/question_simple', question: result

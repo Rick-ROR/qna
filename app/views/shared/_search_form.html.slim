@@ -1,0 +1,5 @@
+= form_with  url: '/search', method: :get, class: 'form-inline search', local: true do |f|
+  div[class="form-group mx-sm-3 mb-2"]
+    = f.text_field :query, class: "form-control", placeholder: "type to search"
+    = f.submit 'go', class: "input-group-text"
+
