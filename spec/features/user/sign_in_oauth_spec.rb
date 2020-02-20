@@ -47,7 +47,7 @@ feature 'User can sign in with OAuth providers', %q{
     expect(page).to have_content 'To register, you must specify and confirm the email address:'
 
     fill_in 'oauth_email', with: user_email
-    within('form') { click_on 'Receive Email' }
+    within('.container form') { click_on 'Receive Email' }
     expect(page).to have_content "Check #{user_email} and confirm your email address before continuing."
 
     open_email user_email
@@ -66,7 +66,7 @@ feature 'User can sign in with OAuth providers', %q{
     expect(page).to have_content 'To register, you must specify and confirm the email address:'
 
     fill_in 'oauth_email', with: user_email
-    within('form') { click_on 'Receive Email' }
+    within('.container form') { click_on 'Receive Email' }
 
     expect(page).to have_content 'You entered the wrong email format!'
     expect(page).to have_field('oauth_email')

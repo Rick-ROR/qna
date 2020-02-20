@@ -6,9 +6,9 @@ feature 'user can search on the site', %q{
 } do
   given!(:question) { create(:question) }
 
+  before { visit root_path }
+
   scenario 'search anything', js: true, sphinx: true do
-    visit root_path
-    page.save_and_open_screenshot
     expect(page).to have_content question.title
 
     ThinkingSphinx::Test.run do
@@ -16,13 +16,11 @@ feature 'user can search on the site', %q{
       fill_in 'query', with: ''
       click_on 'go'
 
-      page.save_and_open_screenshot
       expect(page).to have_content question.title
     end
   end
 
   scenario 'search title', js: true, sphinx: true do
-    visit root_path
     expect(page).to have_content question.title
 
     ThinkingSphinx::Test.run do

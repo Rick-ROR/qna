@@ -15,7 +15,7 @@ feature 'User can sign up', %q(
     fill_in 'Email', with: user.email
     fill_in 'Password', with: user.password
     fill_in 'Password confirmation', with: user.password
-    within('form') { click_on 'Sign up' }
+    within('.container form') { click_on 'Sign up' }
 
     expect(page).to have_content 'A message with a confirmation link has been sent to your email address.'
     open_email user.email
@@ -33,7 +33,7 @@ feature 'User can sign up', %q(
     fill_in 'Email', with: 'user@example.edu'
     fill_in 'Password', with: 'fluency'
     fill_in 'Password confirmation', with: 'goooooo'
-    within('form') { click_on 'Sign up' }
+    within('.container form') { click_on 'Sign up' }
 
     expect(page).to have_css '#error_explanation'
   end

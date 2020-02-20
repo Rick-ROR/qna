@@ -1,2 +1,3 @@
 test:
   mysql41: 9307
+  indices_location: /home/vagrant/data/sphinx_indices
