@@ -7,10 +7,12 @@ class Services::SearchSphinx
     "by users" => User,
   }.freeze
 
-  def call(params)
+  def self.call(query:, scope: nil)
 
-    scope = ALLOW_SCOPES.include?(params[:scope]) ? ALLOW_SCOPES[params[:scope]] : ThinkingSphinx
+    scope = ALLOW_SCOPES.include?(scope) ? ALLOW_SCOPES[scope] : ThinkingSphinx
 
-    scope.send :search, ThinkingSphinx::Query.escape(params[:query])
+    query_safe = ThinkingSphinx::Query.escape(query)
+
+    scope.search query_safe
   end
 end

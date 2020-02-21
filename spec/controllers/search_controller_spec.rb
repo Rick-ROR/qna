@@ -5,13 +5,11 @@ RSpec.describe SearchController, type: :controller do
 
   describe 'GET #result' do
     let!(:questions) { create_list(:question, 2) }
-    let!(:service) { Services::SearchSphinx.new }
 
     context "with allow scopes" do
       allow_scopes.keys.each do |scope|
         before do
-          allow(Services::SearchSphinx).to receive(:new).and_return(service)
-          expect(service).to receive(:call).and_return(questions)
+          expect(Services::SearchSphinx).to receive(:call).and_return(questions)
           get :result, params: { scope: scope, query: "title" }
         end
 
@@ -32,8 +30,7 @@ RSpec.describe SearchController, type: :controller do
 
     context "with not allow scope" do
       before do
-        allow(Services::SearchSphinx).to receive(:new).and_return(service)
-        expect(service).to receive(:call).and_return(questions)
+        expect(Services::SearchSphinx).to receive(:call).and_return(questions)
         get :result, params: { scope: "Lory", query: "" }
       end
 
