@@ -2,7 +2,10 @@ class SearchController < ApplicationController
   skip_authorization_check
 
   def result
-    # byebug
-    @results = ThinkingSphinx.search ThinkingSphinx::Query.escape(params[:query])
+    @results = Services::SearchSphinx.new.call(search_params)
+  end
+
+  def search_params
+    params.permit(:query, :scope)
   end
 end

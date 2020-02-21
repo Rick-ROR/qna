@@ -4,4 +4,4 @@ h5
   p
     ul *{:class => "mb-3"}
       - @results.each do |result|
-        = render 'questions/question_simple', question: result
+        li= render result.class.to_s.downcase, resource: result

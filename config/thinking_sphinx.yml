@@ -1,3 +1,8 @@
 test:
   mysql41: 9307
   indices_location: /home/vagrant/data/sphinx_indices
+  enable_star: 1
+  min_infix_len: 3
+development:
+  enable_star: 1
+  min_infix_len: 3
