@@ -50,6 +50,8 @@ Rails.application.routes.draw do
   resources :subscriptions, only: %i[create]
   delete '/subscriptions', to: 'subscriptions#destroy'
 
+  get '/search', to: 'search#result'
+
   root to: 'questions#index'
 
   mount ActionCable.server => '/cable'

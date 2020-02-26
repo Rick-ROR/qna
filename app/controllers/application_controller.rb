@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
 
+  before_action :store_user_location!, if: :storable_location?
   before_action :gon_user, unless: :devise_controller?
 
   rescue_from CanCan::AccessDenied do |exception|
@@ -20,10 +21,25 @@ class ApplicationController < ActionController::Base
   end
 
   check_authorization unless: :devise_controller?
-end
 
-private
 
-def gon_user
-  gon.user = current_user.id if current_user
+  private
+
+  def gon_user
+    gon.user = current_user.id if current_user
+  end
+
+  def storable_location?
+    request.get? && is_navigational_format? &&
+      !request.xhr? && !request.path.start_with?("/users/")
+  end
+
+  def store_user_location!
+    # :user is the scope we are authenticating
+    store_location_for(:user, request.fullpath)
+  end
+
+  def after_sign_out_path_for(resource_or_scope)
+    request.referrer || root_path
+  end
 end
