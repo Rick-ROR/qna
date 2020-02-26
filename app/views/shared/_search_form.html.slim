@@ -1,5 +1,5 @@
 = form_with  url: search_path, method: :get, class: 'form-inline search h-5', local: true do |f|
   div[class="form-group mx-md-3 mb-2"]
-    = f.select :scope, Services::SearchSphinx::ALLOW_SCOPES.keys, class: "form-control"
+    = f.select :scope, Services::SearchSphinx::ALLOW_SCOPES.keys, {}, { class: "form-control", id: "scope" }
     = f.text_field :query, class: "form-control", placeholder: "type to search"
     = f.submit 'go', class: "input-group-text"
