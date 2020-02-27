@@ -66,8 +66,19 @@ Rails.application.configure do
   config.action_mailer.perform_caching = false
   config.action_mailer.default_url_options = { host: '185.195.24.82' }
 
-  config.action_mailer.delivery_method = :letter_opener
-  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings =
+    {
+      address: 'smtp.yandex.ru',
+      port: 465,
+      domain: 'yandex.ru',
+      authentication: :plain,
+      tls: true,
+      enable_starttls_auto: true,
+      user_name: Rails.application.credentials[Rails.env.to_sym][:mailer][:user],
+      password: Rails.application.credentials[Rails.env.to_sym][:mailer][:password]
+    }
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
