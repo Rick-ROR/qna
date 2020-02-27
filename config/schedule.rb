@@ -13,6 +13,9 @@
 #   rake "some:great:rake:task"
 # end
 #
+# fix => bundler: not executable: bin/rails
+set :runner_command, "rails runner"
+
 every 1.day, at: '4:30 am' do
   runner "Services::DailyDigest.new.send_digest"
 end
