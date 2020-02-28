@@ -44,3 +44,6 @@ append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/syst
 # create service in /etc/systemd/user/sidekiq.service
 set :init_system, :systemd
 set :service_unit_name, "sidekiq"
+
+
+after 'deploy:publishing', 'unicorn:restart'
