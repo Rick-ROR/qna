@@ -1,6 +1,7 @@
-p Files:
-ul.attached_files *{:class => "mb-3"}
-  - files.each do |file|
-    li= link_to file.filename.to_s, url_for(file)
-    - if current_user&.author_of?(file.record)
-      = link_to 'Delete', file_path(file), remote: true, method: :delete, data: {confirm: 'Are your sure?'}
+- cache [file, current_user]
+  p Files:
+  ul.attached_files *{:class => "mb-3"}
+    - files.each do |file|
+      li= link_to file.filename.to_s, url_for(file)
+      - if current_user&.author_of?(file.record)
+        = link_to 'Delete', file_path(file), remote: true, method: :delete, data: {confirm: 'Are your sure?'}

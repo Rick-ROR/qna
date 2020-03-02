@@ -1,16 +1,17 @@
-.question_box *{class: "border rounded border-primary mb-5 px-3", data: { 'question-id': question.id }}
-  = render question
+- cache [question, current_user]
+  .question_box *{class: "border rounded border-primary mb-5 px-3", data: { 'question-id': question.id }}
+    = render question
 
 
-  div[id="comments-question-#{question.id}" class="comments"]
-    - if can?(:create, Comment)
-      = render 'comments/new', comment: question.comments.new
+    div[id="comments-question-#{question.id}" class="comments"]
+      - if can?(:create, Comment)
+        = render 'comments/new', comment: question.comments.new
 
-    ul
-      = render partial: 'comments/comment', collection: question.comments.select(&:persisted?), :as => :comment
+      ul
+        = render partial: 'comments/comment', collection: question.comments.select(&:persisted?), :as => :comment
 
-ul.question_answers
-  = render question.answers.with_attached_files
+  ul.question_answers
+    = render question.answers.with_attached_files
 
-- if can?(:create, Answer)
-  = render 'answers/new', answer: question.answers.new
+  - if can?(:create, Answer)
+    = render 'answers/new', answer: question.answers.new
