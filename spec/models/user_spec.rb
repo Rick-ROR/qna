@@ -43,16 +43,16 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe '#email_valid?' do
+  describe '#email_format_valid?' do
     let(:user) { build(:user) }
     let(:user_invalid) { build(:user, email: '@kkk@example.edu') }
 
     it 'returns true if email is valid' do
-      expect(user.email_valid?).to be true
+      expect(user.email_format_valid?).to be true
     end
 
     it 'returns false if email is invalid' do
-      expect(user_invalid.email_valid?).to be false
+      expect(user_invalid.email_format_valid?).to be false
     end
 
   end

@@ -26,8 +26,9 @@ class User < ApplicationRecord
     Services::FindForOauth.call(auth)
   end
 
-  def email_valid?
+  def email_format_valid?
     valid?
+    errors[:email].delete("has already been taken")
     errors[:email].blank?
   end
 
