@@ -1,4 +1,4 @@
-class Services::Subscription
+class Services::MailingNotifications
   def send_notification(answer)
     answer.question.subscriptions.includes(:user).find_each do |subscription|
       SubscriptionMailer.notification(subscription.user, answer).deliver_later

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Services::Subscription, type: :services do
+RSpec.describe Services::MailingNotifications, type: :services do
   let!(:answer) { create(:answer) }
 
   context 'for subscribers' do
