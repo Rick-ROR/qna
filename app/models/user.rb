@@ -35,4 +35,8 @@ class User < ApplicationRecord
   def get_sub_on_question(question)
     subscriptions.find_by(question_id: question)
   end
+
+  def email_short
+    "@" + email.split('@').first
+  end
 end

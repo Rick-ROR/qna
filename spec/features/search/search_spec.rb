@@ -23,7 +23,7 @@ feature 'user can search on the site', %q{
       expect(page).to have_content question.body
       expect(page).to have_content answer.body
       expect(page).to have_content comment.body
-      expect(page).to have_content user.email
+      expect(page).to have_content user.email_short
     end
   end
 
@@ -41,12 +41,12 @@ feature 'user can search on the site', %q{
 
         expect(page).to have_content "Results found 4"
         expect(page).to have_content "Polynation"
-        expect(page).to have_content user_poly.email
+        expect(page).to have_content user_poly.email_short
 
         expect(page).to_not have_content question.body
         expect(page).to_not have_content answer.body
         expect(page).to_not have_content comment.body
-        expect(page).to_not have_content user.email
+        expect(page).to_not have_content user.email_short
       end
     end
   end
@@ -62,7 +62,7 @@ feature 'user can search on the site', %q{
 
       expect(page).to_not have_content answer.body
       expect(page).to_not have_content comment.body
-      expect(page).to_not have_content user.email
+      expect(page).to_not have_content user.email_short
     end
   end
 
@@ -77,7 +77,7 @@ feature 'user can search on the site', %q{
 
       expect(page).to_not have_content question.body
       expect(page).to_not have_content comment.body
-      expect(page).to_not have_content user.email
+      expect(page).to_not have_content user.email_short
     end
   end
 
@@ -92,7 +92,7 @@ feature 'user can search on the site', %q{
 
       expect(page).to_not have_content question.body
       expect(page).to_not have_content answer.body
-      expect(page).to_not have_content user.email
+      expect(page).to_not have_content user.email_short
     end
   end
 
@@ -103,7 +103,7 @@ feature 'user can search on the site', %q{
       fill_in 'query', with: ''
       click_on 'go'
 
-      expect(page).to have_content user.email
+      expect(page).to have_content user.email_short
 
       expect(page).to_not have_content question.body
       expect(page).to_not have_content answer.body

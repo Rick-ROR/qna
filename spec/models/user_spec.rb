@@ -73,4 +73,13 @@ RSpec.describe User, type: :model do
 
   end
 
+  describe '#email_short' do
+    let!(:user) { create(:user) }
+
+    it 'returns mail username only' do
+      expect(user.email_short).to eq "@" + user.email.split('@').first
+    end
+
+  end
+
 end
