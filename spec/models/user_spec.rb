@@ -43,16 +43,16 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe '#email_valid?' do
+  describe '#email_format_valid?' do
     let(:user) { build(:user) }
     let(:user_invalid) { build(:user, email: '@kkk@example.edu') }
 
     it 'returns true if email is valid' do
-      expect(user.email_valid?).to be true
+      expect(user.email_format_valid?).to be true
     end
 
     it 'returns false if email is invalid' do
-      expect(user_invalid.email_valid?).to be false
+      expect(user_invalid.email_format_valid?).to be false
     end
 
   end
@@ -69,6 +69,15 @@ RSpec.describe User, type: :model do
 
     it 'returns nil if not exists' do
       expect(user.get_sub_on_question(question)).to be nil
+    end
+
+  end
+
+  describe '#email_short' do
+    let!(:user) { create(:user) }
+
+    it 'returns mail username only' do
+      expect(user.email_short).to eq "@" + user.email.split('@').first
     end
 
   end

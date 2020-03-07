@@ -26,12 +26,17 @@ class User < ApplicationRecord
     Services::FindForOauth.call(auth)
   end
 
-  def email_valid?
+  def email_format_valid?
     valid?
+    errors[:email].delete("has already been taken")
     errors[:email].blank?
   end
 
   def get_sub_on_question(question)
     subscriptions.find_by(question_id: question)
+  end
+
+  def email_short
+    "@" + email.split('@').first
   end
 end

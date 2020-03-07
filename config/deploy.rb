@@ -45,7 +45,7 @@ append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/syst
 set :init_system, :systemd
 set :service_unit_name, "sidekiq"
 
-# не работает capistrano запускает unicorn с опцией -E deployment впрочем всё работает
+# не работает. capistrano всё равно запускает unicorn с опцией -E deployment, впрочем на работе не сказывается.
 set :unicorn_env, "production"
 set :rails_env, "production"
 
