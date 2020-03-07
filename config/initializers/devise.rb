@@ -21,7 +21,7 @@ Devise.setup do |config|
   if Rails.env.production?
     config.mailer_sender = Rails.application.credentials[Rails.env.to_sym][:mailer][:user]
   else
-    config.mailer_sender = 'qna@example.edu'
+    config.mailer_sender = 'qna_dev@example.edu'
   end
 
       # Configure the class responsible to send e-mails.
