@@ -19,7 +19,8 @@ Rails.application.configure do
   if Rails.root.join('tmp', 'caching-dev.txt').exist?
     config.action_controller.perform_caching = true
 
-    config.cache_store = :memory_store
+    # config.cache_store = :memory_store
+    config.cache_store = :redis_store, "redis://localhost:6379/0/cache", { expires_in: 90.minutes }
     config.public_file_server.headers = {
       'Cache-Control' => "public, max-age=#{2.days.to_i}"
     }
@@ -28,6 +29,7 @@ Rails.application.configure do
 
     config.cache_store = :null_store
   end
+  config.action_controller.enable_fragment_cache_logging = true
 
   # Store uploaded files on the local file system (see config/storage.yml for options)
   # config.active_storage.service = :local

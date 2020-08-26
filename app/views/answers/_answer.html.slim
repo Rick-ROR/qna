@@ -1,49 +1,50 @@
 - if answer.persisted?
-  li.answer *{:class => "border-left mb-3 px-4 #{"best" if answer.best}"} id="answer-#{answer.id}"
+  - cache [answer, current_user]
+    li.answer *{:class => "border-left mb-3 px-4 #{"best" if answer.best}"} id="answer-#{answer.id}"
 
-    - if answer.best?
-      p.best
-        = octicon "mortar-board", :height => 48
-        = " This is best answer!"
+      - if answer.best?
+        p.best
+          = octicon "mortar-board", :height => 48
+          = " This is best answer!"
 
-    p= answer.body
+      p= answer.body
 
-    = render 'shared/votes', resource: answer
+      = render 'shared/votes', resource: answer
 
-    ul.answer_actions *{:class => "list-inline mb-2"}
-      - if can?(:best, answer)
-        li.list-inline-item= link_to 'make best?', best_answer_path(answer), method: :patch, class: "best-answer-link", data: {answer_id: answer.id}, remote: true
+      ul.answer_actions *{:class => "list-inline mb-2"}
+        - if can?(:best, answer)
+          li.list-inline-item= link_to 'make best?', best_answer_path(answer), method: :patch, class: "best-answer-link", data: {answer_id: answer.id}, remote: true
 
 
-      - if can?(:destroy, answer)
-        li.list-inline-item= link_to 'Delete', answer_path(answer), remote: true, method: :delete, data: {confirm: 'Are your sure?'}
-      - if can?(:update, answer)
-        li.list-inline-item= link_to 'Edit', '#', class: 'edit-answer-link', data: {answer_id: answer.id}
+        - if can?(:destroy, answer)
+          li.list-inline-item= link_to 'Delete', answer_path(answer), remote: true, method: :delete, data: {confirm: 'Are your sure?'}
+        - if can?(:update, answer)
+          li.list-inline-item= link_to 'Edit', '#', class: 'edit-answer-link', data: {answer_id: answer.id}
 
-        = form_with model: answer, class: 'hidden', html: {id: "edit-answer-#{answer.id}"} do |f|
-          .answer_errors= render 'shared/errors', resource: answer
-          p
-            = f.label :body, 'Your answer'
-            = f.text_area :body, class: "form-control"
-          p
-            = f.label :files
-            br
-            = f.file_field :files, multiple: true, direct_upload: true
+          = form_with model: answer, class: 'hidden', html: {id: "edit-answer-#{answer.id}"} do |f|
+            .answer_errors= render 'shared/errors', resource: answer
+            p
+              = f.label :body, 'Your answer'
+              = f.text_area :body, class: "form-control"
+            p
+              = f.label :files
+              br
+              = f.file_field :files, multiple: true, direct_upload: true
 
-          - answer.links.build if answer.links.empty?
-          = render 'shared/links_form', form: f
+            - answer.links.build if answer.links.empty?
+            = render 'shared/links_form', form: f
 
-          p = f.submit 'Save'
+            p = f.submit 'Save'
 
-    - if answer.links.any? && answer.links[0].persisted?
-      = render 'shared/links', links: answer.links
+      - if answer.links.any? && answer.links[0].persisted?
+        = render 'shared/links', links: answer.links
 
-    - if answer.files.attached?
-      = render 'shared/files', files: answer.files
+      - if answer.files.attached?
+        = render 'shared/files', files: answer.files
 
-    div[id="comments-answer-#{answer.id}" class="comments"]
-      - if can?(:create, Comment)
-        = render 'comments/new', comment: answer.comments.new
+      div[id="comments-answer-#{answer.id}" class="comments"]
+        - if can?(:create, Comment)
+          = render 'comments/new', comment: answer.comments.new
 
-      ul
-        = render partial: 'comments/comment', collection: answer.comments.select(&:persisted?), :as => :comment
+        ul
+          = render partial: 'comments/comment', collection: answer.comments.select(&:persisted?), :as => :comment
